@@ -64,7 +64,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Abonnement.cpp" />
+    <ClCompile Include="Liste.cpp" />
+    <ClCompile Include="Noeud.cpp" />
     <ClCompile Include="TP3_Prototype.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Abonnement.h" />
+    <ClInclude Include="librairie.h" />
+    <ClInclude Include="Liste.h" />
+    <ClInclude Include="Noeud.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
