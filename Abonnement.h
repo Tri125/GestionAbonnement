@@ -8,6 +8,9 @@ private:
 	DateEpoch debutAbonnement;
 
 public:
+
+	string ToString();
+
 #pragma region Constructeur
 	Abonnement();
 	Abonnement(int, string, string, string, string, DateEpoch);

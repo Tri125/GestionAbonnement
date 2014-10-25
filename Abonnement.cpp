@@ -26,8 +26,10 @@ Abonnement::Abonnement(int i, string p, string n, string t, string adr, int a, i
 }
 #pragma endregion Constructeur
 
-
-
+string Abonnement::ToString()
+{
+	return nullptr;
+}
 
 
 #pragma region Getter
