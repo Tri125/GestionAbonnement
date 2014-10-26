@@ -32,9 +32,16 @@ Noeud::~Noeud()
 	delete pInfo;
 }
 
+Noeud* dernierNoeud(Noeud* racine)
+{
+	while (racine && racine->pNext)
+		racine = racine->pNext;
+	return racine;
+}
+
 string Noeud::ToString()
 {
-	return nullptr;
+	return pInfo->ToString();
 }
 
 #pragma region Getter

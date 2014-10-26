@@ -6,11 +6,13 @@ private:
 
 	//Insert de O(1) for the win!
 	Noeud* dernier;
-
-	void Swap(Noeud*, Noeud*);
+	Noeud* SortedMerge(Noeud*, Noeud*);
+	void MergeSort(Noeud**);
+	void FrontBackSplit(Noeud*, Noeud**, Noeud**);
 	
 public:
 
+	void Swap(Noeud*, Noeud*);
 	enum class SortType
 	{
 		ID, NOM, PRENOM, DATE, TITRE
@@ -24,4 +26,5 @@ public:
 	Noeud* Recherche(unsigned int);
 	unsigned int getCompteur();
 	void Vidage();
+	void Afficher();
 };

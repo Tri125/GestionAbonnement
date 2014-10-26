@@ -28,7 +28,7 @@ Abonnement::Abonnement(int i, string p, string n, string t, string adr, int a, i
 
 string Abonnement::ToString()
 {
-	return nullptr;
+	return  to_string(id);
 }
 
 

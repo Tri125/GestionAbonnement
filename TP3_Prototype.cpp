@@ -694,13 +694,40 @@ void Teste()
 	Liste l;
 	Noeud* a = new Noeud(1, "T", "T", "T", "T", 1, 1, 1);
 	Noeud* b = new Noeud(2, "T", "T", "T", "T", 1, 1, 1);
-	Noeud* c = new Noeud(3, "T", "T", "T", "T", 1, 1, 1);
+	Noeud* c = new Noeud(23, "T", "T", "T", "T", 1, 1, 1);
 	Noeud* d = new Noeud(4, "T", "T", "T", "T", 1, 1, 1);
-	l.Ajouter(a);
-	l.Ajouter(b);
-	l.Ajouter(c);
-	l.Ajouter(d);
+	Noeud* e = new Noeud(5, "T", "T", "T", "T", 1, 1, 1);
+	Noeud* f = new Noeud(6, "T", "T", "T", "T", 1, 1, 1);
+	Noeud* g = new Noeud(53, "T", "T", "T", "T", 1, 1, 1);
+	Noeud* h = new Noeud(7, "T", "T", "T", "T", 1, 1, 1);
+	Noeud* i = new Noeud(36, "T", "T", "T", "T", 1, 1, 1);
+	Noeud* j = new Noeud(75, "T", "T", "T", "T", 1, 1, 1);
+	Noeud* k = new Noeud(32, "T", "T", "T", "T", 1, 1, 1);
+	
 
-//	l.Swap(b, c);
+	l.Ajouter(k);
+	l.Ajouter(g);
+	l.Ajouter(e);
+	l.Ajouter(i);
+	l.Ajouter(d);
+	l.Ajouter(c);
+	l.Ajouter(j);
+	l.Ajouter(h);
+	l.Ajouter(b);
+	l.Ajouter(f);
+
+	l.Ajouter(a);
+
+
+
+
+
+
+
+	//l.Swap(b, c);
+	l.Afficher();
+	cout << endl;
+	l.Trier(Liste::SortType::ID, true);
+	l.Afficher();
 	system("pause");
 }

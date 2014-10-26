@@ -73,10 +73,6 @@ void Liste::Swap(Noeud* first, Noeud* second)
 	swap(first->pInfo, second->pInfo);
 }
 
-void Liste::Trier(SortType type, bool croissant)
-{
-
-}
 
 Noeud* Liste::Recherche(unsigned int id)
 {
@@ -111,4 +107,95 @@ void Liste::Vidage()
 unsigned int Liste::getCompteur()
 {
 	return compteur;
+}
+
+
+//http://www.sanfoundry.com/cpp-program-implement-merge-sort-linked-list/
+void Liste::Trier(SortType type, bool croissant)
+{
+	if (compteur > 0)
+	{
+		MergeSort(&premier);
+	}
+}
+
+void Liste::MergeSort(Noeud** headRef)
+{
+	Noeud* head = *headRef;
+	Noeud* left;
+	Noeud* right;
+	if ((head == NULL) || head->pNext == NULL)
+	{
+		return;
+	}
+	FrontBackSplit(head, &left, &right);
+	MergeSort(&left);
+	MergeSort(&right);
+	*headRef = SortedMerge(left, right);
+
+}
+
+Noeud* Liste::SortedMerge(Noeud* left, Noeud* right)
+{
+	Noeud* result = NULL;
+	if (left == NULL)
+		return right;
+	else
+		if (right == NULL)
+			return left;
+	if (left->pInfo->getId() <= right->pInfo->getId())
+	{
+		result = left;
+		result->pNext = SortedMerge(left->pNext, right);
+	}
+	else
+	{
+		result = right;
+		result->pNext = SortedMerge(left, right->pNext);
+	}
+	return result;
+
+
+}
+
+
+void Liste::FrontBackSplit(Noeud* source, Noeud** frontRef, Noeud** backRef)
+{
+	Noeud* fast;
+	Noeud* slow;
+
+	if (source == NULL || source->pNext == NULL)
+	{
+		*frontRef = source;
+		*backRef = NULL;
+	}
+	else
+	{
+		slow = source;
+		fast = source->pNext;
+		while (fast != NULL)
+		{
+			fast = fast->pNext;
+			if (fast != NULL)
+			{
+				slow = slow->pNext;
+				fast = fast->pNext;
+			}
+		}
+		*frontRef = source;
+		*backRef = slow->pNext;
+		slow->pNext = NULL;
+	}
+}
+
+
+void Liste::Afficher()
+{
+	Noeud* courant = premier;
+	while (courant)
+	{
+		cout << courant->ToString();
+		cout << endl;
+		courant = courant->pNext;
+	}
 }

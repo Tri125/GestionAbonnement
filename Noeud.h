@@ -1,7 +1,7 @@
 class Noeud{
 
 private:
-
+	
 
 public:
 	Noeud* pNext;
@@ -13,6 +13,7 @@ public:
 	Noeud(unsigned int, string, string, string, string, DateEpoch);
 	Noeud(unsigned int, string, string, string, string, int, int, int);
 	~Noeud();
+	Noeud* dernierNoeud(Noeud*);
 	string ToString();
 
 #pragma region Getter
