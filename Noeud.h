@@ -1,22 +1,25 @@
 class Noeud{
 
 private:
-	Noeud* pNext;
-	Abonnement* pInfo;
+
 
 public:
+	Noeud* pNext;
+	Noeud* pBack;
+	Abonnement* pInfo;
+
 	Noeud();
 	Noeud(Abonnement*);
+	Noeud(unsigned int, string, string, string, string, DateEpoch);
+	Noeud(unsigned int, string, string, string, string, int, int, int);
 	~Noeud();
 	string ToString();
 
 #pragma region Getter
 	Abonnement* getPInfo();
-	Noeud* getPNext();
 #pragma endregion Getter
 
 #pragma region Setter
-	void setPNext(Noeud*);
 	void setPInfo(Abonnement*);
 #pragma endregion Setter
 };

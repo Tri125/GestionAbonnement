@@ -11,7 +11,6 @@
 
 #include "librairie.h"
 
-
 void EcranBienvenue();
 char MenuPrincipal();
 

@@ -10,12 +10,26 @@ Noeud::Noeud(Abonnement* ab)
 {
 	pInfo = ab;
 	pNext = nullptr;
+	pBack = nullptr;
+}
+
+Noeud::Noeud(unsigned int i, string p, string n, string titre, string addr, DateEpoch date)
+{
+	pInfo = new Abonnement(i, p, n, titre, addr, date);
+	pNext = nullptr;
+	pBack = nullptr;
+}
+
+Noeud::Noeud(unsigned int i, string p, string n, string titre, string addr, int a, int m, int j)
+{
+	pInfo = new Abonnement(i, p, n, titre, addr, a, m ,j);
+	pNext = nullptr;
+	pBack = nullptr;
 }
 
 Noeud::~Noeud()
 {
 	delete pInfo;
-	delete pNext;
 }
 
 string Noeud::ToString()
@@ -28,18 +42,9 @@ Abonnement* Noeud::getPInfo()
 {
 	return pInfo;
 }
-
-Noeud* Noeud::getPNext()
-{
-	return pNext;
-}
 #pragma endregion Getter
 
 #pragma region Setter
-void Noeud::setPNext(Noeud* next)
-{
-	pNext = next;
-}
 
 void Noeud::setPInfo(Abonnement* info)
 {

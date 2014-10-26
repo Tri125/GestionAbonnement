@@ -1,6 +1,12 @@
 class Liste{
 private:
+
+	unsigned int compteur;
 	Noeud* premier;
+
+	//Insert de O(1) for the win!
+	Noeud* dernier;
+	void Swap(Noeud*, Noeud*);
 
 public:
 
@@ -14,7 +20,7 @@ public:
 	void Ajouter(Noeud*);
 	void Supprimer(unsigned int);
 	void Trier(SortType, bool);
-	void Recherche(unsigned int);
-	Noeud* getPremier();
-	void setPremier(Noeud*);
+	Noeud* Recherche(unsigned int);
+	unsigned int getCompteur();
+	void Vidage();
 };
