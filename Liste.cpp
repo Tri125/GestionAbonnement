@@ -70,8 +70,7 @@ void Liste::Supprimer(unsigned int id)
 
 void Liste::Swap(Noeud* first, Noeud* second)
 {
-	swap(first->pNext, second->pNext);
-	swap(first->pBack, second->pBack);
+	swap(first->pInfo, second->pInfo);
 }
 
 void Liste::Trier(SortType type, bool croissant)

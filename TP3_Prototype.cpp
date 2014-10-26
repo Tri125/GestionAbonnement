@@ -57,6 +57,8 @@ void AfficheIntervNom(string option);
 
 void AfficherUnAbonnement();
 
+void Teste();
+
 //------------------------------------
 //
 //-------------------------------------
@@ -86,6 +88,7 @@ void main()
 char MenuPrincipal()
 {
 	EcranBienvenue();
+	Teste();
 	char Choix;
 	cout << "\n\nMenu principal:\n\n";
 	cout << "\tA-Ajouter\n";
@@ -686,3 +689,18 @@ void AffichageTermine()
 }
 
 
+void Teste()
+{
+	Liste l;
+	Noeud* a = new Noeud(1, "T", "T", "T", "T", 1, 1, 1);
+	Noeud* b = new Noeud(2, "T", "T", "T", "T", 1, 1, 1);
+	Noeud* c = new Noeud(3, "T", "T", "T", "T", 1, 1, 1);
+	Noeud* d = new Noeud(4, "T", "T", "T", "T", 1, 1, 1);
+	l.Ajouter(a);
+	l.Ajouter(b);
+	l.Ajouter(c);
+	l.Ajouter(d);
+
+//	l.Swap(b, c);
+	system("pause");
+}

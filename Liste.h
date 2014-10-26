@@ -6,8 +6,9 @@ private:
 
 	//Insert de O(1) for the win!
 	Noeud* dernier;
-	void Swap(Noeud*, Noeud*);
 
+	void Swap(Noeud*, Noeud*);
+	
 public:
 
 	enum class SortType
