@@ -727,7 +727,7 @@ void Teste()
 	//l.Swap(b, c);
 	l.Afficher();
 	cout << endl;
-	l.Trier(Liste::SortType::ID, true);
+	l.Trier(Liste::SortType::ID, false);
 	l.Afficher();
 	system("pause");
 }

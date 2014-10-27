@@ -7,16 +7,22 @@ class DateEpoch
    int Heure;
    int Minute;
    int Seconde;
-  
 
-   public:
-      DateEpoch();
-      DateEpoch(int,int,int);
-      DateEpoch(int);
-      time_t Epoch;
+
+public:
+   DateEpoch();
+   DateEpoch(int, int, int);
+   DateEpoch(int);
+   time_t Epoch;
    void Affiche();
+   bool operator< (DateEpoch&);
+   bool operator<= (DateEpoch&);
+   bool operator== (DateEpoch&);
+   bool operator!= (DateEpoch&);
+   bool operator>= (DateEpoch&);
+   bool operator> (DateEpoch&);
 
-   private:
+private:
 
    void DateEpoch::ConvertEpochToFormat();
    void DateEpoch::ConvertFormatToEpoch();
