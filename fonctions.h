@@ -7,3 +7,5 @@ enum class ModifyType
 };
 
 void ModificationAbonnement(Liste*, Noeud*, string, ModifyType);
+void ValidationChamps(string);
+string TraitementLigne(string);
