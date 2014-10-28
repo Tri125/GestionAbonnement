@@ -56,6 +56,7 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
       try
       {
          ValidationChamps(ligneCourante);
+         //TraitementLigne(ligneCourante);
       }
 
       catch (exception& e)
@@ -80,8 +81,16 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
 
 }
 
-string TraitementLigne(string ligne)
+Noeud* TraitementLigne(string ligne)
 {
+   const string SEPARATING_SYMBOL = ";";
+   size_t pos = ligne.find(SEPARATING_SYMBOL, 0);
+
+   while (pos != string::npos)
+   {
+      ligne = ligne.substr(pos);
+      pos = ligne.find(SEPARATING_SYMBOL, 0);
+   }
    return NULL;
 }
 
@@ -96,7 +105,6 @@ void ValidationChamps(string ligne)
       nbrChamps++;
       pos = ligne.find(SEPARATING_SYMBOL, pos + 1);
    }
-
    if (nbrChamps > 5)
       throw ManyDataField();
 
