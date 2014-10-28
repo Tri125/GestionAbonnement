@@ -9,3 +9,4 @@ using namespace std;
 #include "Abonnement.h"
 #include "Noeud.h"
 #include "Liste.h"
+#include "fonctions.h"

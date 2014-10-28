@@ -59,6 +59,7 @@ void AfficherUnAbonnement();
 
 void Teste();
 
+Liste* clients = new Liste();
 //------------------------------------
 //
 //-------------------------------------
@@ -279,6 +280,7 @@ void ChargerFichier()
 	cout << "\n\nAjout d'abonnements à partir d'un fichier\n\n";
 	cout << "Fichier à charger:";
 	cin >> FicIn;
+	AjoutAvecFichier(clients, FicIn);
 	cout << "-- Chargement de " << FicIn << " en cours ...\n";
 	cout << "-- 327 abonnements ajoutés. Chargement terminé.\n\n";
 	system("pause");
@@ -729,5 +731,5 @@ void Teste()
 	cout << endl;
 	l.Trier(Liste::SortType::ID, false);
 	l.Afficher();
-	system("pause");
+	//system("pause");
 }

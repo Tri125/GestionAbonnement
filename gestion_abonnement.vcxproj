@@ -66,6 +66,7 @@
   <ItemGroup>
     <ClCompile Include="Abonnement.cpp" />
     <ClCompile Include="DateEpoch.cpp" />
+    <ClCompile Include="fonctions.cpp" />
     <ClCompile Include="Liste.cpp" />
     <ClCompile Include="Noeud.cpp" />
     <ClCompile Include="TP3_Prototype.cpp" />
@@ -73,6 +74,7 @@
   <ItemGroup>
     <ClInclude Include="Abonnement.h" />
     <ClInclude Include="DateEpoch.h" />
+    <ClInclude Include="fonctions.h" />
     <ClInclude Include="librairie.h" />
     <ClInclude Include="Liste.h" />
     <ClInclude Include="Noeud.h" />
