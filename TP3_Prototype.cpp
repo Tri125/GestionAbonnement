@@ -66,6 +66,7 @@ Liste* clients = new Liste();
 void main()
 {
 	setlocale(LC_ALL, "");
+	srand(time(NULL));
 	EcranBienvenue();
 	char Choix;
 	do
@@ -82,6 +83,7 @@ void main()
 		default: break;
 		}
 	} while (Choix != 'Q');
+	delete clients;
 }
 
 //------------------------------------
@@ -173,9 +175,9 @@ char MenuModifier(string NumAbonnement)
 	cout << "\n\nInformations de l'abonnement " << NumAbonnement << ":\n\n";
 	cout << "-------------------------------------------\n";
 	cout << "\tNom\t\t:Abramovitch" << endl;
-	cout << "\tPrénom\t\t:Iossef" << endl;	
+	cout << "\tPrénom\t\t:Iossef" << endl;
 	cout << "\tPublication\t:L'actualité nationale" << endl;
-	cout << "\tAdresse\t\t:1234 Place Rouge" << endl;	
+	cout << "\tAdresse\t\t:1234 Place Rouge" << endl;
 
 	cout << "\tDate abonnement\t:2003-07-25" << endl << endl;
 	cout << "-------------------------------------------\n";
@@ -275,6 +277,7 @@ void Ajouter()
 void ChargerFichier()
 {
 	string FicIn;
+	int i = clients->getCompteur();
 	//char Choix;
 
 	EcranBienvenue();
@@ -283,7 +286,7 @@ void ChargerFichier()
 	cin >> FicIn;
 	AjoutAvecFichier(clients, FicIn);
 	cout << "-- Chargement de " << FicIn << " en cours ...\n";
-	cout << "-- 327 abonnements ajoutés. Chargement terminé.\n\n";
+	cout << "-- " << clients->getCompteur() - i << " abonnements ajoutés. Chargement terminé.\n\n";
 	system("pause");
 }
 //------------------------------------
@@ -295,23 +298,25 @@ void AjoutInteractif()
 	string tampon;
 	string Prenom;
 	string Adresse;
-	string DateAdhesion;
+	DateEpoch DateAdhesion;
 	string Publication;
 	char Choix;
+	do
+	{
+		EcranBienvenue();
+		cout << "\n\nAjout interactif d'un abonnement\n\n";
+		cout << "Nom\t\t:";
+		cin >> Nom;
+		getline(cin, tampon);
+		cout << "Prénom\t\t:";
+		getline(cin, Prenom);
+		cout << "Adresse\t\t:";
+		getline(cin, Adresse);
 
-	EcranBienvenue();
-	cout << "\n\nAjout interactif d'un abonnement\n\n";
-	cout << "Nom\t\t:";
-	cin >> Nom;
-	getline(cin, tampon);
-	cout << "Prénom\t\t:";
-	getline(cin, Prenom);
-	cout << "Adresse\t\t:";
-	getline(cin, Adresse);
-	
-	DateAdhesion = "2014-10-10";
-	cout << "Publication\t:";
-	getline(cin, Publication);
+		DateAdhesion = DateEpoch();
+		cout << "Publication\t:";
+		getline(cin, Publication);
+	} while (!ValidationInteractif(Prenom, Nom, Publication, Adresse, DateAdhesion));
 
 	EcranBienvenue();
 	cout << "\n\nInfo du nouvel abonnement:\n\n";
@@ -319,14 +324,19 @@ void AjoutInteractif()
 	cout << "\tNom\t\t:" << Nom << endl;
 	cout << "\tPrénom\t\t:" << Prenom << endl;
 	cout << "\tAdresse\t\t:" << Adresse << endl;
-	cout << "\tDate abonnement\t:" << DateAdhesion << endl;
+	cout << "\tDate abonnement\t:";
+	DateAdhesion.Affiche();
 	cout << "\tPublication\t:" << Publication << endl << endl;
 	cout << "-------------------------------------------\n";
 
 	Choix = Confirmation("Voulez-vous ajouter ce abonnement?");
 	switch (toupper(Choix))
 	{
-	case 'C': MessageDeConfirmation(); break;
+	case 'C':
+		AjoutInteractif(clients, Prenom, Nom, Publication, Adresse, DateAdhesion);
+		MessageDeConfirmation();
+		break;
+
 	default:break;
 	}
 }
@@ -423,7 +433,7 @@ void Supprimer()
 	cin >> NumAbonnement;
 	cout << "-------------------------------------------\n";
 	cout << "\tNom\t\t:Abramovitch" << endl;
-	cout << "\tPrénom\t\t:Iossef" << endl;	
+	cout << "\tPrénom\t\t:Iossef" << endl;
 	cout << "\tPublication\t:La semaine hebdo" << endl;
 	cout << "\tAdresse\t\t:1234 Place Rouge" << endl;
 	cout << "\tDate abonnement\t:2003-07-25" << endl << endl;
@@ -498,7 +508,7 @@ void EcranBienvenue()
 	system("cls");
 	setlocale(LC_ALL, "C");
 	cout << coinHG;
-	for (int i = 0; i<48; i++)
+	for (int i = 0; i < 48; i++)
 		cout << ligneH;
 	cout << coinHD << endl;
 	cout << ligneV << "                                                " << ligneV << endl;
@@ -507,7 +517,7 @@ void EcranBienvenue()
 	cout << ligneV << "     Syst\x8Ame de gestion des abonnements         " << ligneV << endl;
 	cout << ligneV << "                                                " << ligneV << endl;
 	cout << coinBG;
-	for (int i = 0; i<48; i++)
+	for (int i = 0; i < 48; i++)
 		cout << ligneH;
 	cout << coinBD << endl;
 	setlocale(LC_ALL, "");
@@ -534,7 +544,7 @@ void AfficherListeComplete(string option)
 	{
 		cout << "Num   Nom                  Prenom               Publication                                Dates   \n";
 		cout << "-----------------------------------------------------------------------------------------------------\n";
-		for (int i = 1; i< 1000; i++)
+		for (int i = 1; i < 1000; i++)
 		{
 			if ((i % 50 == 0) && (option == "ecran"))
 				system("pause");
@@ -616,7 +626,7 @@ void AfficheIntervNum(string option)
 			cout << "Iossef               ";
 			cout << "La vie en rouge   ";
 			cout << "1234 Place Rouge                         ";
-			cout << "2003-07-25     "<< endl;
+			cout << "2003-07-25     " << endl;
 		}
 	}
 	AffichageTermine();
@@ -706,7 +716,7 @@ void Teste()
 	Noeud* i = new Noeud(36, "T", "T", "T", "T", 1, 1, 1);
 	Noeud* j = new Noeud(75, "T", "T", "T", "T", 1, 1, 1);
 	Noeud* k = new Noeud(32, "T", "T", "T", "T", 1, 1, 1);
-	
+
 
 	l.Ajouter(k);
 	l.Ajouter(g);

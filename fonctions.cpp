@@ -56,7 +56,7 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
 		try
 		{
 			//ValidationChamps(ligneCourante);
-			TraitementLigne(ligneCourante);
+			liste->Ajouter(TraitementLigne(ligneCourante));
 		}
 		catch (invalid_argument&)
 		{
@@ -76,7 +76,7 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
 			continue;
 		}
 
-		cout << ligneCourante << endl;
+		//cout << ligneCourante << endl;
 	}
 
 
@@ -162,8 +162,7 @@ Noeud* TraitementLigne(string ligne)
 	}
 
 	DateEpoch date = ValidationDate(client[(int)DataType::DATE]);
-
-	return NULL;
+	return new Noeud(id, client[1], client[2], client[3], client[4], date);
 }
 
 
@@ -214,12 +213,93 @@ DateEpoch ValidationDate(string date)
 //
 //}
 
-void AjoutInteractif(Liste*, Noeud*)
+bool ValidationInteractif(string prenom, string nom, string titre, string adresse, DateEpoch date)
 {
+	bool valide = true;
+	size_t taille = prenom.length();
 
+	if (taille <= 0 || taille > 20)
+	{
+		valide = false;
+		cout << "Longueur Prénom n'est pas situé entre 0 et 20 caractères";
+		cout << endl;
+	}
+
+	taille = nom.length();
+
+	if (taille <= 0 || taille > 20)
+	{
+		valide = false;
+		cout << "Longueur Nom n'est pas situé entre 0 et 20 caractères";
+		cout << endl;
+	}
+	taille = titre.length();
+
+	if (taille <= 0 || taille > 20)
+	{
+		valide = false;
+		cout << "Longueur Titre n'est pas situé entre 0 et 20 caractères";
+		cout << endl;
+	}
+
+	taille = adresse.length();
+
+	if (taille <= 0 || taille > 50)
+	{
+		valide = false;
+		cout << "Longueur Adresse n'est pas situé entre 0 et 50 caractères";
+		cout << endl;
+	}
+
+	if (date.Epoch == -1)
+	{
+		valide = false;
+		cout << "N'est pas une date qui peut être représenté";
+		cout << endl;
+	}
+
+	if (!valide)
+		system("pause");
+	return valide;
 }
 
 void ModificationAbonnement(Liste*, Noeud*, string, ModifyType)
 {
 
+}
+
+void AjoutInteractif(Liste* liste, string prenom, string nom, string titre, string adresse, DateEpoch date)
+{
+	unsigned int id = 0;
+	try
+	{
+		id = GenererGUID(liste);
+	}
+	catch (runtime_error& e)
+	{
+		id = 0;
+		cout << e.what();
+		cout << endl << "\nErreur: Le numéro 0 lui sera assigné par défault\n";
+		system("pause");
+	}
+	liste->Ajouter(new Noeud(id, prenom, nom, titre, adresse, date));
+}
+
+
+unsigned int GenererGUID(Liste* liste)
+{
+	unsigned int guid = 0;
+	const int MAX_TRY = 100;
+	int currentTry = 0;
+	do
+	{
+		if (currentTry > MAX_TRY)
+		{
+			throw runtime_error("fonctions::GenererGUID impossible à trouver un GUID dans un délais acceptable.");
+		}
+		//Max étant la valeur maximal d'un unsigned int
+		guid = rand() % 4294967296;
+		currentTry++;
+	} while (liste->Recherche(guid));
+	return guid;
 }

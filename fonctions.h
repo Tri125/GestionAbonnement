@@ -1,5 +1,5 @@
 void AjoutAvecFichier(Liste*, string);
-void AjoutInteractif(Liste*, Noeud*);
+void AjoutInteractif(Liste*, string, string, string, string, DateEpoch);
 
 enum class ModifyType
 {
@@ -15,3 +15,5 @@ void ModificationAbonnement(Liste*, Noeud*, string, ModifyType);
 //void ValidationChamps(string);
 Noeud* TraitementLigne(string);
 DateEpoch ValidationDate(string);
+bool ValidationInteractif(string, string, string, string, DateEpoch);
+unsigned int GenererGUID(Liste*);

@@ -5,6 +5,7 @@ void DateEpoch::Affiche()
    cout << An << "-" << Mois << "-" << Jour << endl;
 }
 
+
 DateEpoch::DateEpoch()
 {
    Epoch = time(NULL);
