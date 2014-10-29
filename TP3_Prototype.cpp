@@ -65,6 +65,7 @@ Liste* clients = new Liste();
 //-------------------------------------
 void main()
 {
+	setlocale(LC_ALL, "");
 	EcranBienvenue();
 	char Choix;
 	do

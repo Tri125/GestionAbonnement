@@ -4,114 +4,215 @@
 
 struct ManyDataField : public exception
 {
-   const char * what() const throw ()
-   {
-      return "Plus que 6 champs de données détectés";
-   }
+	const char * what() const throw ()
+	{
+		return "Plus que 6 champs de données détectés";
+	}
 };
 
 struct NotEnoughDataField : public exception
 {
-   const char * what() const throw ()
-   {
-      return "Moins que 6 champs de données détectés";
-   }
+	const char * what() const throw ()
+	{
+		return "Moins que 6 champs de données détectés";
+	}
 };
 
 
 void AjoutAvecFichier(Liste* liste, string nomFichier)
 {
-   ifstream ficIn;
-   ficIn.open(nomFichier);
-   string ligneCourante;
-   int nbLigne = 0;
+	ifstream ficIn;
+	ficIn.open(nomFichier);
+	string ligneCourante;
+	int nbLigne = 0;
 
-   while (!ficIn.is_open())
-   {
-      cout << "Erreur de lecture.\n";
-      cout << "Veuillez entrer le nom du fichier contenant les citations : ";
+	while (!ficIn.is_open())
+	{
+		cout << "Erreur de lecture.\n";
+		cout << "Veuillez entrer le nom du fichier contenant les citations : ";
 
-      cin >> nomFichier;
-      ficIn.open(nomFichier);
-   }
+		cin >> nomFichier;
+		ficIn.open(nomFichier);
+	}
 
-   while (ficIn.good())
-   {
-      nbLigne++;
-      getline(ficIn, ligneCourante);
+	while (ficIn.good())
+	{
+		nbLigne++;
+		getline(ficIn, ligneCourante);
 
-      size_t pos = ligneCourante.find_first_not_of("\n \t");
-      //find_first_not_of peut retourner string::npos (constante évalué à -1) si rien n'a été trouvé.
-      //Si c'est le cas, ligne vide, commence par # ou mal formaté, break à l'extérieur du for pour prendre la prochaine ligne.
-      if (pos == string::npos)
-      {
-         continue;
-      }
-      // Ligne avec les espaces en début retiré.
-      ligneCourante = ligneCourante.substr(pos);
+		size_t pos = ligneCourante.find_first_not_of("\n \t");
+		//find_first_not_of peut retourner string::npos (constante évalué à -1) si rien n'a été trouvé.
+		//Si c'est le cas, ligne vide, commence par # ou mal formaté, break à l'extérieur du for pour prendre la prochaine ligne.
+		if (pos == string::npos)
+		{
+			continue;
+		}
+		// Ligne avec les espaces en début retiré.
+		ligneCourante = ligneCourante.substr(pos);
 
-      //Commence par un hashtag, donc ligne de commentaire
-      if (ligneCourante[0] == '#')
-         continue;
-      try
-      {
-         ValidationChamps(ligneCourante);
-         //TraitementLigne(ligneCourante);
-      }
+		//Commence par un hashtag, donc ligne de commentaire
+		if (ligneCourante[0] == '#')
+			continue;
+		try
+		{
+			//ValidationChamps(ligneCourante);
+			TraitementLigne(ligneCourante);
+		}
+		catch (invalid_argument&)
+		{
+			cout << endl;
+			cout << "Erreur: Numéro d'abonnement n'est pas un entier." << endl;
+			cout << "Fichier: " << nomFichier << endl << "Ligne: " << nbLigne << endl;
+			system("pause");
+			continue;
+		}
 
-      catch (exception& e)
-      {
-         cout << endl;
-         cout << "Erreur: " << e.what() << endl;
-         cout << "Fichier: " << nomFichier << " ligne: " << nbLigne << endl;
-         system("pause");
-         continue;
-      }
-      //Si la ligne n'est pas valide, continue à la prochaine boucle.
-      //À pour effet d'aller chercher la prochaine ligne.
-      //if (!ValidationLigne(ligneCourante, nbLigne))
-      //continue;
+		catch (exception& e)
+		{
+			cout << endl;
+			cout << "Erreur: " << e.what() << endl;
+			cout << "Fichier: " << nomFichier << endl << "Ligne: " << nbLigne << endl;
+			system("pause");
+			continue;
+		}
 
-      cout << ligneCourante << endl;
-   }
+		cout << ligneCourante << endl;
+	}
 
 
 
-   ficIn.close();
+	ficIn.close();
 
 }
 
+
+/*
+https://stackoverflow.com/questions/1120140/how-can-i-read-and-parse-csv-files-in-c
+Solution de Loki Astari
+*/
 Noeud* TraitementLigne(string ligne)
 {
-   const string SEPARATING_SYMBOL = ";";
-   size_t pos = ligne.find(SEPARATING_SYMBOL, 0);
+	const char SEPARATING_SYMBOL = ';';
+	const int NOMBRE_CHAMPS = 6;
 
-   while (pos != string::npos)
-   {
-      ligne = ligne.substr(pos);
-      pos = ligne.find(SEPARATING_SYMBOL, 0);
-   }
-   return NULL;
+	vector<string> client;
+	stringstream ss(ligne);
+	string data;
+	unsigned int id = 0;
+	double tmp = 0;
+
+	while (getline(ss, data, SEPARATING_SYMBOL))
+	{
+		client.push_back(data);
+	}
+
+	if (client.size() > NOMBRE_CHAMPS)
+		throw ManyDataField();
+	//Pas besoin de else, c'est du code unreacheable de toute manière.
+	if (client.size() < NOMBRE_CHAMPS)
+		throw NotEnoughDataField();
+
+	size_t longueur;
+	for (int i = 0; i < NOMBRE_CHAMPS; i++)
+	{
+		longueur = client[i].size();
+		switch (i)
+		{
+		case (int)DataType::ID:
+			tmp = stod(client[i]);
+			char precedent;
+			for (size_t index = 0; index < client[i].length(); index++)
+			{
+				if (index == client[i].length() - 1)
+					break;
+				if (isspace(client[i][index]) && isdigit(precedent))
+					throw invalid_argument("");
+				precedent = client[i][index];
+			}
+			if (floor(tmp) == tmp && client[i].find(',') == string::npos)
+				id = stoul(client[i]);
+			else
+				throw invalid_argument("");
+			break;
+		case (int)DataType::PRENOM:
+			if (longueur <= 0 || longueur > 20)
+				throw runtime_error("Longueur Prenom n'est pas situé entre 0 et 20 caractères");
+			break;
+		case (int)DataType::NOM:
+			if (longueur <= 0 || longueur > 20)
+				throw runtime_error("Longueur Nom n'est pas situé entre 0 et 20 caractères");
+			break;
+		case (int)DataType::TITRE:
+			if (longueur <= 0 || longueur > 20)
+				throw runtime_error("Longueur Titre n'est pas situé entre 0 et 20 caractères");
+			break;
+		case (int)DataType::ADRESSE:
+			if (longueur <= 0 || longueur > 50)
+				throw runtime_error("Longueur Adresse n'est pas situé entre 0 et 50 caractères");
+			break;
+		case (int)DataType::DATE:
+			if (longueur != 10)
+				throw runtime_error("Longueur Date n'est pas 10 caractères");
+			break;
+		default:
+			cout << "fonctions.cpp TraitementLigne(), la longueur du champs aurait du être déjà validé.\n";
+			throw exception();
+			break;
+		}
+	}
+
+	DateEpoch date = ValidationDate(client[(int)DataType::DATE]);
+
+	return NULL;
 }
 
-void ValidationChamps(string ligne)
+
+DateEpoch ValidationDate(string date)
 {
-   const string SEPARATING_SYMBOL = ";";
-   int nbrChamps = 0;
-   size_t pos = ligne.find(SEPARATING_SYMBOL, 0);
+	const string pattern = "\\d\\d\\d\\d-\\d\\d-\\d\\d";
+	cmatch match;
+	regex dateRegex(pattern, regex_constants::ECMAScript);
+	regex_match(date.c_str(), match, dateRegex);
 
-   while (pos != string::npos)
-   {
-      nbrChamps++;
-      pos = ligne.find(SEPARATING_SYMBOL, pos + 1);
-   }
-   if (nbrChamps > 5)
-      throw ManyDataField();
+	if (match.size() != 1)
+		throw runtime_error("N'est pas un format date valide");
+	string validatedFormat = match[0].str();
 
-   if (nbrChamps < 5)
-      throw NotEnoughDataField();
+	int annee;
+	int mois;
+	int jour;
+	//La forme est déjà validé avec une regex. On peu donc ce permettre un peu de liberté concernant la conversion sans avoir peur de lancer d'exception.
+	annee = stoi(validatedFormat.substr(0, 4));
+	mois = stoi(validatedFormat.substr(5, 7));
+	jour = stoi(validatedFormat.substr(8));
 
+	DateEpoch validatedTime(annee, mois, jour);
+	if (validatedTime.Epoch == -1)
+		throw runtime_error("N'est pas une date qui peut être représenté");
+
+	return validatedTime;
 }
+
+
+
+//void ValidationChamps(string ligne)
+//{
+//   const string SEPARATING_SYMBOL = ";";
+//   int nbrChamps = 0;
+//   size_t pos = ligne.find(SEPARATING_SYMBOL, 0);
+//
+//   while (pos != string::npos)
+//   {
+//      nbrChamps++;
+//      pos = ligne.find(SEPARATING_SYMBOL, pos + 1);
+//   }
+//   if (nbrChamps > 5)
+//      throw ManyDataField();
+//
+//   if (nbrChamps < 5)
+//      throw NotEnoughDataField();
+//
+//}
 
 void AjoutInteractif(Liste*, Noeud*)
 {
