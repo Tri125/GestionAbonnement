@@ -9,7 +9,15 @@ string DateEpoch::ToString()
 {
 	stringstream ss;
 	ss.str(std::string());
-	ss << An << "-" << Mois << "-" << Jour << endl;
+
+	ss << An << "-";
+	if (Mois < 10)
+		ss << 0;
+
+	ss << Mois << "-";
+	if (Jour < 10)
+		ss << 0;
+	ss << Jour;
 	return ss.str();
 }
 

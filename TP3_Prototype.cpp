@@ -644,8 +644,10 @@ void AfficherListeComplete(string option)
 			stream << current->pInfo->getAdresse() << ";";
 			stream << current->pInfo->getDebutAbonnement().ToString();
 			stream << endl;
+			current = current->pNext;
 		}
-		cout << "Écriture de 475 abonnements terminée. Disponible dans le fichier " << FicOut << "\n";
+		stream.close();
+		cout << "Écriture de " << clients->getCompteur() << " abonnements terminée. Disponible dans le fichier " << FicOut << "\n";
 	}
 	else
 	{
