@@ -9,6 +9,8 @@
 //  
 //-------------------------------------
 
+
+
 #include "librairie.h"
 
 void EcranBienvenue();
@@ -607,7 +609,7 @@ void EcranBienvenue()
 		cout << ligneH;
 	cout << coinHD << endl;
 	cout << ligneV << "                                                " << ligneV << endl;
-	cout << ligneV << "     Les productions "" inc        " << ligneV << endl;
+	cout << ligneV << "     Les productions                 inc        " << ligneV << endl;
 	cout << ligneV << "                                                " << ligneV << endl;
 	cout << ligneV << "     Syst\x8Ame de gestion des abonnements         " << ligneV << endl;
 	cout << ligneV << "                                                " << ligneV << endl;
@@ -653,15 +655,16 @@ void AfficherListeComplete(string option)
 	{
 		cout << "Num   Nom                  Prenom               Publication                                Dates   \n";
 		cout << "-----------------------------------------------------------------------------------------------------\n";
-		for (unsigned int i = 1; i < clients->getCompteur(); i++)
+		for (unsigned int i = 0; i < clients->getCompteur(); i++)
 		{
 			if ((i % 50 == 0) && (option == "ecran"))
 				system("pause");
-			cout << i << " ";
+			cout << current->pInfo->getId() << " ";
 			cout << "  " << current->pInfo->getNom() << "        ";
 			cout << current->pInfo->getPrenom() << "               ";
 			cout << current->pInfo->getTitre() << "     ";
-			cout << current->pInfo->getAdresse() << "                         ";
+			//cout << current->pInfo->getAdresse()
+			cout << "                         ";
 			current->pInfo->getDebutAbonnement().Affiche();
 			cout << " " << endl;
 			current = current->pNext;
@@ -702,9 +705,9 @@ void AfficherIntervalle(string option)
 //-------------------------------------
 void AfficheIntervNum(string option)
 {
-	int BorneTmp, BorneInf, BorneSup;
+	unsigned int BorneTmp, BorneInf, BorneSup;
 	string FicOut;
-
+	Noeud* current = clients->getPremier();
 	EcranBienvenue();
 	cout << "\n\nAffichage selon un intervalle de numéro abonnement\n\n";
 	cout << "\n\nBorne inférieure:";
@@ -721,23 +724,49 @@ void AfficheIntervNum(string option)
 
 	if (option == "fichier")
 	{
+		ofstream stream;
+		unsigned int nbr = 0;
 		cout << "\nNom du fichier qui recevra la liste par intervalle:";
 		cin >> FicOut;
+		stream.open(FicOut, ios::out);
 		cout << "Ecriture de la liste par intervalle de numéro d'abonnement en cours...\n";
-		cout << "Écriture de 14 abonnements terminée. Disponible dans le fichier " << FicOut << "\n";
+		while (current)
+		{
+			if (current->pInfo->getId() >= BorneInf && current->pInfo->getId() <= BorneSup)
+			{
+				stream << current->pInfo->getId() << ";";
+				stream << current->pInfo->getPrenom() << ";";
+				stream << current->pInfo->getNom() << ";";
+				stream << current->pInfo->getTitre() << ";";
+				stream << current->pInfo->getAdresse() << ";";
+				stream << current->pInfo->getDebutAbonnement().ToString();
+				stream << endl;
+				nbr++;
+			}
+			current = current->pNext;
+		}
+		stream.close();
+		cout << "Écriture de " << nbr << " abonnements terminée. Disponible dans le fichier " << FicOut << "\n";
 	}
 	else
 	{
 		cout << "Num     Nom                  Prenom               Publication                                Dates   \n";
 		cout << "------------------------------------------------------------------------------------------------------\n";
-		for (int i = BorneInf; i <= BorneSup; i++)
+		while (current)
 		{
-			cout << i;
-			cout << "\tAbramovitch        ";
-			cout << "Iossef               ";
-			cout << "La vie en rouge   ";
-			cout << "1234 Place Rouge                         ";
-			cout << "2003-07-25     " << endl;
+			if (current->pInfo->getId() >= BorneInf && current->pInfo->getId() <= BorneSup)
+			{
+				cout << current->pInfo->getId();
+				cout << "  " << current->pInfo->getNom() << "        ";
+				cout << current->pInfo->getPrenom() << "               ";
+				cout << current->pInfo->getTitre() << "     ";
+				//cout << current->pInfo->getAdresse()
+				cout << "                         ";
+				current->pInfo->getDebutAbonnement().Affiche();
+				cout << " " << endl;
+
+			}
+			current = current->pNext;
 		}
 	}
 	AffichageTermine();
@@ -751,7 +780,81 @@ void AfficheIntervDate(string option)
 
 	EcranBienvenue();
 	cout << "\n\nAffichage selon un intervalle d' abonnement\n\n";
-	cout << "Même principe que l'affichage selon un intervalle de numéro-abonnement\n\n";
+
+	DateEpoch BorneTmp, BorneInf, BorneSup;
+	string inf, sup;
+	string FicOut;
+	Noeud* current = clients->getPremier();
+	cout << "\n\nBorne inférieure:";
+	cin >> inf;
+	cout << "Borne supérieure:";
+	cin >> sup;
+	try{
+
+		BorneInf = ValidationDate(inf);
+		BorneSup = ValidationDate(sup);
+	}
+	catch (runtime_error& e)
+	{
+		cout << e.what() << endl;
+		system("pause");
+		return;
+	}
+
+	if (BorneInf > BorneSup)
+	{
+		BorneTmp = BorneInf;
+		BorneInf = BorneSup;
+		BorneSup = BorneTmp;
+	}
+
+	if (option == "fichier")
+	{
+		ofstream stream;
+		unsigned int nbr = 0;
+		cout << "\nNom du fichier qui recevra la liste par intervalle:";
+		cin >> FicOut;
+		stream.open(FicOut, ios::out);
+		cout << "Ecriture de la liste par intervalle d' abonnement en cours...\n";
+		while (current)
+		{
+			if (current->pInfo->getDebutAbonnement() >= BorneInf && current->pInfo->getDebutAbonnement() <= BorneSup)
+			{
+				stream << current->pInfo->getId() << ";";
+				stream << current->pInfo->getPrenom() << ";";
+				stream << current->pInfo->getNom() << ";";
+				stream << current->pInfo->getTitre() << ";";
+				stream << current->pInfo->getAdresse() << ";";
+				stream << current->pInfo->getDebutAbonnement().ToString();
+				stream << endl;
+				current = current->pNext;
+				nbr++;
+			}
+			current = current->pNext;
+		}
+		stream.close();
+		cout << "Écriture de " << nbr << " abonnements terminée. Disponible dans le fichier " << FicOut << "\n";
+	}
+	else
+	{
+		cout << "Num     Nom                  Prenom               Publication                                Dates   \n";
+		cout << "------------------------------------------------------------------------------------------------------\n";
+		while (current)
+		{
+			if (current->pInfo->getDebutAbonnement() >= BorneInf && current->pInfo->getDebutAbonnement() <= BorneSup)
+			{
+				cout << current->pInfo->getId();
+				cout << "  " << current->pInfo->getNom() << "        ";
+				cout << current->pInfo->getPrenom() << "               ";
+				cout << current->pInfo->getTitre() << "     ";
+				//cout << current->pInfo->getAdresse()
+				cout << "                         ";
+				current->pInfo->getDebutAbonnement().Affiche();
+				cout << " " << endl;
+			}
+			current = current->pNext;
+		}
+	}
 	AffichageTermine();
 
 }
@@ -763,7 +866,69 @@ void AfficheIntervValeur(string option)
 
 	EcranBienvenue();
 	cout << "\n\nAffichage selon un intervalle de publications\n\n";
-	cout << "Même principe que l'affichage selon un intervalle de numéro-abonnement\n\n";
+
+	string BorneTmp, BorneInf, BorneSup;
+	string FicOut;
+	Noeud* current = clients->getPremier();
+	cout << "\n\nBorne inférieure:";
+	cin >> BorneInf;
+	cout << "Borne supérieure:";
+	cin >> BorneSup;
+
+	if (BorneInf > BorneSup)
+	{
+		BorneTmp = BorneInf;
+		BorneInf = BorneSup;
+		BorneSup = BorneTmp;
+	}
+
+	if (option == "fichier")
+	{
+		ofstream stream;
+		unsigned int nbr = 0;
+		cout << "\nNom du fichier qui recevra la liste par intervalle:";
+		cin >> FicOut;
+		stream.open(FicOut, ios::out);
+		cout << "Ecriture de la liste par intervalle de publications en cours...\n";
+		while (current)
+		{
+			if (current->pInfo->getTitre() >= BorneInf && current->pInfo->getTitre() <= BorneSup)
+			{
+				stream << current->pInfo->getId() << ";";
+				stream << current->pInfo->getPrenom() << ";";
+				stream << current->pInfo->getNom() << ";";
+				stream << current->pInfo->getTitre() << ";";
+				stream << current->pInfo->getAdresse() << ";";
+				stream << current->pInfo->getDebutAbonnement().ToString();
+				stream << endl;
+				nbr++;
+			}
+			current = current->pNext;
+		}
+		stream.close();
+		cout << "Écriture de " << nbr << " abonnements terminée. Disponible dans le fichier " << FicOut << "\n";
+	}
+	else
+	{
+		cout << "Num     Nom                  Prenom               Publication                                Dates   \n";
+		cout << "------------------------------------------------------------------------------------------------------\n";
+		while (current)
+		{
+			if (current->pInfo->getTitre() >= BorneInf && current->pInfo->getTitre() <= BorneSup)
+			{
+				cout << current->pInfo->getId();
+				cout << "  " << current->pInfo->getNom() << "        ";
+				cout << current->pInfo->getPrenom() << "               ";
+				cout << current->pInfo->getTitre() << "     ";
+				//cout << current->pInfo->getAdresse()
+				cout << "                         ";
+				current->pInfo->getDebutAbonnement().Affiche();
+				cout << " " << endl;
+			}
+			current = current->pNext;
+		}
+	}
+
 	AffichageTermine();
 
 
@@ -776,7 +941,70 @@ void AfficheIntervNom(string option)
 
 	EcranBienvenue();
 	cout << "\n\nAffichage d'un intervalle de noms\n\n";
-	cout << "Même principe que l'affichage de la liste selon un intervalle de numéro-abonnement\n\n";
+
+	string BorneTmp, BorneInf, BorneSup;
+	string FicOut;
+	Noeud* current = clients->getPremier();
+	cout << "\n\nBorne inférieure:";
+	cin >> BorneInf;
+	cout << "Borne supérieure:";
+	cin >> BorneSup;
+
+	if (BorneInf > BorneSup)
+	{
+		BorneTmp = BorneInf;
+		BorneInf = BorneSup;
+		BorneSup = BorneTmp;
+	}
+
+	if (option == "fichier")
+	{
+		ofstream stream;
+		unsigned int nbr = 0;
+		cout << "\nNom du fichier qui recevra la liste par intervalle:";
+		cin >> FicOut;
+		stream.open(FicOut, ios::out);
+		cout << "Ecriture de la liste par intervalle de noms en cours...\n";
+		while (current)
+		{
+			if (current->pInfo->getNom() >= BorneInf && current->pInfo->getNom() <= BorneSup)
+			{
+				stream << current->pInfo->getId() << ";";
+				stream << current->pInfo->getPrenom() << ";";
+				stream << current->pInfo->getNom() << ";";
+				stream << current->pInfo->getTitre() << ";";
+				stream << current->pInfo->getAdresse() << ";";
+				stream << current->pInfo->getDebutAbonnement().ToString();
+				stream << endl;
+				nbr++;
+			}
+
+			current = current->pNext;
+		}
+		stream.close();
+		cout << "Écriture de " << nbr << " abonnements terminée. Disponible dans le fichier " << FicOut << "\n";
+	}
+	else
+	{
+		cout << "Num     Nom                  Prenom               Publication                                Dates   \n";
+		cout << "------------------------------------------------------------------------------------------------------\n";
+		while (current)
+		{
+			if (current->pInfo->getNom() >= BorneInf && current->pInfo->getNom() <= BorneSup)
+			{
+				cout << current->pInfo->getId();
+				cout << "  " << current->pInfo->getNom() << "        ";
+				cout << current->pInfo->getPrenom() << "               ";
+				cout << current->pInfo->getTitre() << "     ";
+				//cout << current->pInfo->getAdresse()
+				cout << "                         ";
+				current->pInfo->getDebutAbonnement().Affiche();
+				cout << " " << endl;
+			}
+			current = current->pNext;
+		}
+	}
+
 	AffichageTermine();
 }
 
@@ -786,20 +1014,21 @@ void AfficheIntervNom(string option)
 void AfficherUnAbonnement()
 {
 
-	int NumAbonnement;
+	unsigned int NumAbonnement;
+	Abonnement* cible;
 	EcranBienvenue();
 	cout << "\n\nAffichage d'une seul abonnement\n\n";
 	cout << "Numéro d'abonnement à afficher:";
 	cin >> NumAbonnement;
 	cout << "\n\nInformations de l'abonnement " << NumAbonnement << ":\n\n";
-	cout << "-------------------------------------------\n";
-	cout << "\tNom\t\t:Abramovitch" << endl;
-	cout << "\tPrénom\t\t:Iossef" << endl;
-	cout << "\tPublication\t:La semaine de l'info" << endl;
-	cout << "\tAdresse\t\t:1234 Place Rouge" << endl;
-	cout << "\tDate abonnement\t:2003-07-25" << endl << endl;
-
-	cout << "-------------------------------------------\n";
+	cible = clients->RechercheAbonnement(NumAbonnement);
+	if (!cible)
+	{
+		cout << "\nAbonnement introuvable.\n";
+		system("pause");
+		return;
+	}
+	cible->AffichageDetailer();
 	AffichageTermine();
 }
 

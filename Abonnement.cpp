@@ -1,3 +1,6 @@
+
+
+
 #include "librairie.h"
 
 #pragma region Constructeur
@@ -6,6 +9,9 @@ Abonnement::Abonnement()
 	id = -1;
 }
 
+/*
+Méthode pour avoir un affichage plus graphique des informations de l'abonnement.
+*/
 void Abonnement::AffichageDetailer()
 {
 	cout << "-------------------------------------------\n";
@@ -43,9 +49,14 @@ Abonnement::Abonnement(int i, string p, string n, string t, string adr, int a, i
 }
 #pragma endregion Constructeur
 
+// Retourne un string contenant toute les informations de l'Abonnement
 string Abonnement::ToString()
 {
-	return  to_string(id);
+	return  to_string(id) + "  " + nom + "        "
+	+ prenom + "               "
+	+ titre + "     "
+	+ adresse + "                         "
+	+ debutAbonnement.ToString();
 }
 
 

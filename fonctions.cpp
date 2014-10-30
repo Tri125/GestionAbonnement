@@ -1,7 +1,9 @@
+
+
 #include "librairie.h"
 
 
-
+// Exception lorsqu'une ligne a plus que 6 champs de données.
 struct ManyDataField : public exception
 {
 	const char * what() const throw ()
@@ -10,6 +12,8 @@ struct ManyDataField : public exception
 	}
 };
 
+
+// Exception lorsqu'une ligne a moins que 6 champs de données.
 struct NotEnoughDataField : public exception
 {
 	const char * what() const throw ()
@@ -18,7 +22,8 @@ struct NotEnoughDataField : public exception
 	}
 };
 
-
+// Fonction qui apartir d'un pointeur vers une Liste et d'un nom de fichier
+// ouvre un flux d'entrée pour faire la lecture du fichier et populer la Liste de Noeuds.
 void AjoutAvecFichier(Liste* liste, string nomFichier)
 {
 	ifstream ficIn;
@@ -26,6 +31,7 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
 	string ligneCourante;
 	int nbLigne = 0;
 
+	//Si l'ouverture échoue, demande à nouveau nom de fichier.
 	while (!ficIn.is_open())
 	{
 		cout << "Erreur de lecture.\n";
@@ -42,7 +48,7 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
 
 		size_t pos = ligneCourante.find_first_not_of("\n \t");
 		//find_first_not_of peut retourner string::npos (constante évalué à -1) si rien n'a été trouvé.
-		//Si c'est le cas, ligne vide, commence par # ou mal formaté, break à l'extérieur du for pour prendre la prochaine ligne.
+		//Si c'est le cas, ligne vide ou mal formaté, continue pour prendre la prochaine ligne.
 		if (pos == string::npos)
 		{
 			continue;
@@ -50,16 +56,21 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
 		// Ligne avec les espaces en début retiré.
 		ligneCourante = ligneCourante.substr(pos);
 
-		//Commence par un hashtag, donc ligne de commentaire
+		//Commence par un hashtag, donc ligne de commentaire et on ignore
 		if (ligneCourante[0] == '#')
 			continue;
 		try
 		{
-			//ValidationChamps(ligneCourante);
+			//Envois la ligne dans la fonction TraitementLigne qui retourne un pointeur sur un objet Noeud
+			// et le rajoute dans la liste.
+			// TraitementLigne pour lancer une exception si la ligne n'est pas dans un format pour créer un objet Noeud.
 			liste->Ajouter(TraitementLigne(ligneCourante));
 		}
+		//Exception lancer par la famille de fonctions stol  (string to long) et autres.
+		// Est seulement utilisé pour convertir le numéro de client.
 		catch (invalid_argument&)
 		{
+			//Affiche le nom du fichier et la ligne où ce trouve l'erreur.
 			cout << endl;
 			cout << "Erreur: Numéro d'abonnement n'est pas un entier." << endl;
 			cout << "Fichier: " << nomFichier << endl << "Ligne: " << nbLigne << endl;
@@ -67,8 +78,10 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
 			continue;
 		}
 
+		//Autres exceptions
 		catch (exception& e)
 		{
+			//Affiche le nom du fichier et la ligne où ce trouve l'erreur.
 			cout << endl;
 			cout << "Erreur: " << e.what() << endl;
 			cout << "Fichier: " << nomFichier << endl << "Ligne: " << nbLigne << endl;
@@ -76,7 +89,6 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
 			continue;
 		}
 
-		//cout << ligneCourante << endl;
 	}
 
 
@@ -89,26 +101,35 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
 /*
 https://stackoverflow.com/questions/1120140/how-can-i-read-and-parse-csv-files-in-c
 Solution de Loki Astari
+
+Extrait les champs de données d'une string de format csv, les valides et les testes pour créer un objet Noeud
+et retourner un pointeur du dit objet.
 */
 Noeud* TraitementLigne(string ligne)
 {
+	//Caractère séparant les champs
 	const char SEPARATING_SYMBOL = ';';
 	const int NOMBRE_CHAMPS = 6;
 
+	//Chaque string du vecteur est un champs de donnée extrait de la ligne.
 	vector<string> client;
+	//stringstream simplifie l'extraction de beaucoup d'efforts.
 	stringstream ss(ligne);
 	string data;
 	unsigned int id = 0;
 	double tmp = 0;
 
+	//Extraction de chaque champs séparé par SEPARATING_SYMBOL et l'enregistre dans data.
 	while (getline(ss, data, SEPARATING_SYMBOL))
 	{
+		//Met la donnée dans le vector.
 		client.push_back(data);
 	}
 
+	//Lance une exception si plus que NOMBRE_CHAMPS a été extrait de la ligne
 	if (client.size() > NOMBRE_CHAMPS)
 		throw ManyDataField();
-	//Pas besoin de else, c'est du code unreacheable de toute manière.
+	//Lance une exception si moins que NOMBRE_CHAMPS a été extrait de la ligne
 	if (client.size() < NOMBRE_CHAMPS)
 		throw NotEnoughDataField();
 
@@ -119,16 +140,24 @@ Noeud* TraitementLigne(string ligne)
 		switch (i)
 		{
 		case (int)DataType::ID:
+			//string to double et enregistre le résultat dans tmp;
+			//Lance une exception invalid_argument si stod échoue.
 			tmp = stod(client[i]);
+			if (tmp < 0)
+				throw runtime_error("Le numéro client est négatif");
 			char precedent;
 			for (size_t index = 0; index < client[i].length(); index++)
 			{
+				//Essentiellement, teste pour voir si il y a un caractère qui sépare les numéros.
+				//Est nécessaire, car stod va convertir la première partie continue sans problème malgré que le format soit innaceptable.
 				if (index == client[i].length() - 1)
 					break;
 				if (isspace(client[i][index]) && isdigit(precedent))
 					throw invalid_argument("");
 				precedent = client[i][index];
 			}
+			//stod échoue pour les flottants séparé par un point ".", mais ignore les virgules.
+			//Dois donc vérifier soit même pour ce cas.
 			if (floor(tmp) == tmp && client[i].find(',') == string::npos)
 				id = stoul(client[i]);
 			else
@@ -155,37 +184,51 @@ Noeud* TraitementLigne(string ligne)
 				throw runtime_error("Longueur Date n'est pas 10 caractères");
 			break;
 		default:
-			cout << "fonctions.cpp TraitementLigne(), la longueur du champs aurait du être déjà validé.\n";
-			throw exception();
+			throw runtime_error("fonctions.cpp TraitementLigne(), la longueur du champs aurait du être déjà validé.");
 			break;
 		}
 	}
-
+	//Lance ValidationDate pour obtenir un objet DateEpoch validé.
+	//Peut lancer des exceptions.
 	DateEpoch date = ValidationDate(client[(int)DataType::DATE]);
+	//Création d'un nouveau objet Noeud et retour de son pointeur.
 	return new Noeud(id, client[1], client[2], client[3], client[4], date);
 }
 
-
+/*
+D'après un string, vérifie si c'est d'un format YYYY-MM-DD pour créer un objet DateEpoch et le retourner.
+Utilise une expression régulière pour valider le format.
+*/
 DateEpoch ValidationDate(string date)
 {
+	// 0000-00-00
 	const string pattern = "\\d\\d\\d\\d-\\d\\d-\\d\\d";
+	//Les résultats seront enregistrés dans le cmatch.
 	cmatch match;
+	//Charge le moteur regex avec le motif et en spécifiant la nomenclature ECMAScript
 	regex dateRegex(pattern, regex_constants::ECMAScript);
+	//Lance le moteur regex! regex_match avec une cible, un cmatch pour mettre les résultats et une regex pour trouver les résultats.
 	regex_match(date.c_str(), match, dateRegex);
 
+	//Plus qu'un match, moins qu'un match? Ce n'est pas d'un format que l'on s'attend.
+	//Lance une exception
 	if (match.size() != 1)
 		throw runtime_error("N'est pas un format date valide");
+	//Le motif de la date maintenant validé, on l'enregistre dans une string et l'on peut prendre certaine liberté pour
+	//en extraire les années, les mois et les jours.
 	string validatedFormat = match[0].str();
 
 	int annee;
 	int mois;
 	int jour;
-	//La forme est déjà validé avec une regex. On peu donc ce permettre un peu de liberté concernant la conversion sans avoir peur de lancer d'exception.
+	//La forme est déjà validé avec une regex. On peu donc ce permettre un peu de liberté concernant la conversion sans avoir peur de lancer des exceptions.
 	annee = stoi(validatedFormat.substr(0, 4));
 	mois = stoi(validatedFormat.substr(5, 7));
 	jour = stoi(validatedFormat.substr(8));
 
+	//Création d'un objet DateEpoch
 	DateEpoch validatedTime(annee, mois, jour);
+	//Si Epoch, le nombre de secondes depuis 1970, est à -1, alors l'objet n'a pas reçu une date qui peut être représenté.
 	if (validatedTime.Epoch == -1)
 		throw runtime_error("N'est pas une date qui peut être représenté");
 
@@ -263,38 +306,49 @@ bool ValidationInteractif(string prenom, string nom, string titre, string adress
 	return valide;
 }
 
-void ModificationAbonnement(Liste*, Noeud*, string, ModifyType)
-{
+//void ModificationAbonnement(Liste*, Noeud*, string, ModifyType)
+//{
+//
+//}
 
-}
-
+/*
+À partir d'un pointeur vers un objet Liste, de 4 string et d'un objet DateEpoch, crée un objet Noeud et le rajoute dans l'objet Liste.
+*/
 void AjoutInteractif(Liste* liste, string prenom, string nom, string titre, string adresse, DateEpoch date)
 {
 	unsigned int id = 0;
 	try
 	{
+		//Essaie de trouver un numéro client non utilisé
 		id = GenererGUID(liste);
 	}
 	catch (runtime_error& e)
 	{
 		id = 0;
 		cout << e.what();
+		//Est une mauvaise idée puisque si le numéro 0 est déjà utilisé, les opérations de suppression, de recherche et de modification
+		//sera brisé.
 		cout << endl << "\nErreur: Le numéro 0 lui sera assigné par défault\n";
 		system("pause");
 	}
 	liste->Ajouter(new Noeud(id, prenom, nom, titre, adresse, date));
 }
 
-
+/*
+Génère un unsigned int au hasard et vérifie si le nombre est déjà utilisé par un objet Abonnement dans la Liste.
+Si c'est le cas, tente une nouvelle génération au hasard.
+*/
 unsigned int GenererGUID(Liste* liste)
 {
 	unsigned int guid = 0;
-	const int MAX_TRY = 100;
+	const int MAX_TRY = 1000;
 	int currentTry = 0;
 	do
 	{
 		if (currentTry > MAX_TRY)
 		{
+			//À déjà essayé MAX_TRY fois. Peut-être qu'il ne reste plus de nombre libre qui peut être représenté par un unsigned int
+			//On que la liste est trop saturé qu'il est difficile de ne pas générer un au hasard qui n'est pas déjà utilisé.
 			throw runtime_error("fonctions::GenererGUID impossible à trouver un GUID dans un délais acceptable.");
 		}
 		//Max étant la valeur maximal d'un unsigned int

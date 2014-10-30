@@ -1,8 +1,12 @@
+
+
 class Liste{
 
 public:
 
 	void Swap(Noeud*, Noeud*);
+
+	//ENUM pour bien indiquer le type de Trie désiré.
 	enum class SortType
 	{
 		ID, NOM, DATE, TITRE
