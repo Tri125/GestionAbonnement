@@ -303,3 +303,18 @@ unsigned int GenererGUID(Liste* liste)
 	} while (liste->RechercheAbonnement(guid));
 	return guid;
 }
+
+
+bool isValidAdresse(string adresse)
+{
+	if (adresse.length() > 0 && adresse.length() <= 50)
+		return true;
+	return false;
+}
+
+bool isValidTitre(string titre)
+{
+	if (titre.length() > 0 && titre.length() <= 20)
+		return true;
+	return false;
+}

@@ -15,5 +15,7 @@ void ModificationAbonnement(Liste*, Noeud*, string, ModifyType);
 //void ValidationChamps(string);
 Noeud* TraitementLigne(string);
 DateEpoch ValidationDate(string);
+bool isValidAdresse(string);
+bool isValidTitre(string);
 bool ValidationInteractif(string, string, string, string, DateEpoch);
 unsigned int GenererGUID(Liste*);

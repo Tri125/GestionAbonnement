@@ -57,8 +57,6 @@ void AfficheIntervNom(string option);
 
 void AfficherUnAbonnement();
 
-void Teste();
-
 Liste* clients = new Liste();
 //------------------------------------
 //
@@ -91,7 +89,6 @@ void main()
 char MenuPrincipal()
 {
 	EcranBienvenue();
-	Teste();
 	char Choix;
 	cout << "\n\nMenu principal:\n\n";
 	cout << "\tA-Ajouter\n";
@@ -131,13 +128,35 @@ void Modifier()
 {
 	char Choix;
 	string NumAbonnement;
-
-	EcranBienvenue();
-	cout << "\n\nModifications des informations d'un abonnement\n\n";
-	cout << "Numéro d'abonnement à modifier:";
-	cin >> NumAbonnement;
-
-
+	unsigned int id;
+	bool erreur = false;
+	Abonnement* cible;
+	do
+	{
+		try
+		{
+			erreur = false;
+			EcranBienvenue();
+			cout << "\n\nModifications des informations d'un abonnement\n\n";
+			cout << "Numéro d'abonnement à modifier:";
+			cin >> NumAbonnement;
+			id = stol(NumAbonnement);
+		}
+		catch (invalid_argument&)
+		{
+			cout << endl;
+			cout << "\nErreur: Numéro d'abonnement n'est pas un entier.\n" << endl;
+			system("pause");
+			erreur = true;
+		}
+	} while (erreur);
+	cible = clients->RechercheAbonnement(id);
+	if (!cible)
+	{
+		cout << "\nErreur: Abonnement introuvable.\n";
+		system("pause");
+		return;
+	}
 	Choix = MenuModifier(NumAbonnement);
 	switch (Choix)
 	{
@@ -159,7 +178,9 @@ void Vider()
 
 	switch (toupper(Choix))
 	{
-	case 'C': MessageDeConfirmation(); break;
+	case 'C': MessageDeConfirmation();
+		clients->Vidage();
+		break;
 	default:break;
 	}
 }
@@ -169,17 +190,15 @@ void Vider()
 //-------------------------------------
 char MenuModifier(string NumAbonnement)
 {
+	unsigned int id;
+	Abonnement* cible;
 	char Choix;
-	EcranBienvenue();
-	cout << "\n\nInformations de l'abonnement " << NumAbonnement << ":\n\n";
-	cout << "-------------------------------------------\n";
-	cout << "\tNom\t\t:Abramovitch" << endl;
-	cout << "\tPrénom\t\t:Iossef" << endl;
-	cout << "\tPublication\t:L'actualité nationale" << endl;
-	cout << "\tAdresse\t\t:1234 Place Rouge" << endl;
 
-	cout << "\tDate abonnement\t:2003-07-25" << endl << endl;
-	cout << "-------------------------------------------\n";
+	//NumAbonnement déjà convertie sans erreur à l'appel précédent. Idéalement je changerais l'appel de fonction.
+	id = stol(NumAbonnement);
+	cible = clients->RechercheAbonnement(id);
+	EcranBienvenue();
+	cible->AffichageDetailer();
 
 	cout << "\tModifier:\n\n";
 	cout << "\t\tA-Adresse\n";
@@ -198,13 +217,29 @@ void ModifierAdresse(string Num)
 	string NeoAdresse;
 	string tampon;
 	char Choix;
-
-	EcranBienvenue();
-	cout << "\n\nModification de l'adresse de l'abonnement " << Num << "\n\n";
-	cout << "\t\t Ancienne adresse\t: 1234 Place Rouge\n\n";
-	cout << "\t\t Nouvelle adresse\t: ";
+	unsigned int id;
+	Abonnement* cible;
+	bool erreur = false;
+	//NumAbonnement déjà convertie sans erreur à l'appel précédent. Idéalement je changerais l'appel de fonction.
+	id = stol(Num);
+	cible = clients->RechercheAbonnement(id);
 	getline(cin, tampon);
-	getline(cin, NeoAdresse);
+	do
+	{
+		erreur = false;
+		EcranBienvenue();
+		cout << "\n\nModification de l'adresse de l'abonnement " << Num << "\n\n";
+		cout << "\t\t Ancienne adresse\t: " << cible->getAdresse() << "\n\n";
+
+		cout << "\t\t Nouvelle adresse\t: ";
+		getline(cin, NeoAdresse);
+		if (!isValidAdresse(NeoAdresse))
+		{
+			erreur = true;
+			cout << "\t\tErreur: Adresse n'est pas situé entre 0 et 50 caractères\n";
+			system("pause");
+		}
+	} while (erreur);
 
 	EcranBienvenue();
 	cout << "\n\nNouvelle adresse proposée pour abonnement " << Num << "\n\n";
@@ -214,7 +249,10 @@ void ModifierAdresse(string Num)
 	Choix = Confirmation("Enregistrer les changements");
 	switch (toupper(Choix))
 	{
-	case 'C': MessageDeConfirmation(); break;
+	case 'C':
+		MessageDeConfirmation();
+		cible->setAdresse(NeoAdresse);
+		break;
 	default:break;
 	}
 }
@@ -227,13 +265,32 @@ void ModifierPublication(string Num)
 	string NeoPublication;
 	string tampon;
 	char Choix;
-
-	EcranBienvenue();
-	cout << "\n\nModification de la Publication de: " << Num << "\n\n";
-	cout << "\t\t Ancienne Publication\t: L'actualité nationale\n\n";
-	cout << "\t\t Nouvelle Publication\t: ";
+	unsigned int id;
+	Abonnement* cible;
+	bool erreur = false;
+	//NumAbonnement déjà convertie sans erreur à l'appel précédent. Idéalement je changerais l'appel de fonction.
+	id = stol(Num);
+	cible = clients->RechercheAbonnement(id);
 	getline(cin, tampon);
-	getline(cin, NeoPublication);
+	do
+	{
+		erreur = false;
+
+
+		EcranBienvenue();
+		cout << "\n\nModification de la Publication de: " << Num << "\n\n";
+		cout << "\t\t Ancienne Publication\t: "<< cible->getTitre() <<"\n\n";
+		cout << "\t\t Nouvelle Publication\t: ";
+		getline(cin, NeoPublication);
+
+		if (!isValidTitre(NeoPublication))
+		{
+			erreur = true;
+			cout << "\t\tErreur: Publication n'est pas situé entre 0 et 20 caractères\n";
+			system("pause");
+		}
+
+	} while (erreur);
 
 	EcranBienvenue();
 	cout << "\n\nNouvelle Publication de l'abonnement " << Num << "\n\n";
@@ -243,7 +300,10 @@ void ModifierPublication(string Num)
 	Choix = Confirmation("Modifier la Publication");
 	switch (toupper(Choix))
 	{
-	case 'C': MessageDeConfirmation(); break;
+	case 'C': 
+		MessageDeConfirmation(); 
+		cible->setTitre(NeoPublication);
+		break;
 	default:break;
 	}
 }
@@ -458,9 +518,9 @@ void Supprimer()
 	Choix = Confirmation("Voulez vous le supprimer?");
 	switch (toupper(Choix))
 	{
-	case 'C': 
+	case 'C':
 		clients->Supprimer(id);
-		MessageDeConfirmation(); 
+		MessageDeConfirmation();
 		break;
 	default:break;
 	}
@@ -717,49 +777,5 @@ void AfficherUnAbonnement()
 void AffichageTermine()
 {
 	cout << "\n\t----------FIN---------------\n\n\n";
-	system("pause");
-}
-
-
-void Teste()
-{
-	Liste l;
-	Noeud* a = new Noeud(1, "T", "T", "T", "T", 1, 1, 1);
-	Noeud* b = new Noeud(2, "T", "T", "T", "T", 1, 1, 1);
-	Noeud* c = new Noeud(23, "T", "T", "T", "T", 1, 1, 1);
-	Noeud* d = new Noeud(4, "T", "T", "T", "T", 1, 1, 1);
-	Noeud* e = new Noeud(5, "T", "T", "T", "T", 1, 1, 1);
-	Noeud* f = new Noeud(6, "T", "T", "T", "T", 1, 1, 1);
-	Noeud* g = new Noeud(53, "T", "T", "T", "T", 1, 1, 1);
-	Noeud* h = new Noeud(7, "T", "T", "T", "T", 1, 1, 1);
-	Noeud* i = new Noeud(36, "T", "T", "T", "T", 1, 1, 1);
-	Noeud* j = new Noeud(75, "T", "T", "T", "T", 1, 1, 1);
-	Noeud* k = new Noeud(32, "T", "T", "T", "T", 1, 1, 1);
-
-
-	l.Ajouter(k);
-	l.Ajouter(g);
-	l.Ajouter(e);
-	l.Ajouter(i);
-	l.Ajouter(d);
-	l.Ajouter(c);
-	l.Ajouter(j);
-	l.Ajouter(h);
-	l.Ajouter(b);
-	l.Ajouter(f);
-
-	//l.Ajouter(a);
-
-
-
-
-
-
-
-	//l.Swap(b, c);
-	l.Afficher();
-	cout << endl;
-	l.Trier(Liste::SortType::ID, false);
-	l.Afficher();
 	system("pause");
 }
