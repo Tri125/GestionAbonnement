@@ -21,6 +21,7 @@ public:
    bool operator!= (DateEpoch&);
    bool operator>= (DateEpoch&);
    bool operator> (DateEpoch&);
+   string ToString();
 
 private:
 

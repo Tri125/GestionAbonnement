@@ -5,7 +5,7 @@ public:
 	void Swap(Noeud*, Noeud*);
 	enum class SortType
 	{
-		ID, NOM, PRENOM, DATE, TITRE
+		ID, NOM, DATE, TITRE
 	};
 
 	Liste();
@@ -17,6 +17,7 @@ public:
 	void Vidage();
 	void Afficher();
 	Abonnement* RechercheAbonnement(unsigned int);
+	Noeud* getPremier();
 
 private:
 

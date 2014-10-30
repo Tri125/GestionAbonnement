@@ -5,6 +5,14 @@ void DateEpoch::Affiche()
    cout << An << "-" << Mois << "-" << Jour << endl;
 }
 
+string DateEpoch::ToString()
+{
+	stringstream ss;
+	ss.str(std::string());
+	ss << An << "-" << Mois << "-" << Jour << endl;
+	return ss.str();
+}
+
 
 DateEpoch::DateEpoch()
 {

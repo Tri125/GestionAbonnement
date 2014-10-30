@@ -279,7 +279,7 @@ void ModifierPublication(string Num)
 
 		EcranBienvenue();
 		cout << "\n\nModification de la Publication de: " << Num << "\n\n";
-		cout << "\t\t Ancienne Publication\t: "<< cible->getTitre() <<"\n\n";
+		cout << "\t\t Ancienne Publication\t: " << cible->getTitre() << "\n\n";
 		cout << "\t\t Nouvelle Publication\t: ";
 		getline(cin, NeoPublication);
 
@@ -300,8 +300,8 @@ void ModifierPublication(string Num)
 	Choix = Confirmation("Modifier la Publication");
 	switch (toupper(Choix))
 	{
-	case 'C': 
-		MessageDeConfirmation(); 
+	case 'C':
+		MessageDeConfirmation();
 		cible->setTitre(NeoPublication);
 		break;
 	default:break;
@@ -436,14 +436,30 @@ void Trier()
 	{
 		switch (Choix)
 		{
-		case '1': TrierListe("Numéro d'abonnement", "croissant"); break;
-		case '2': TrierListe("Numéro d'abonnement", "décroissant"); break;
-		case '3': TrierListe("Nom abonné", "croissant"); break;
-		case '4': TrierListe("Nom abonné", "décroissant"); break;
-		case '5': TrierListe("Date abonnement", "croissant"); break;
-		case '6': TrierListe("Date abonnement", "décroissant"); break;
-		case '7': TrierListe("Publication", "croissant"); break;
-		case '8': TrierListe("Publication", "décroissant"); break;
+		case '1': TrierListe("Numéro d'abonnement", "croissant");
+			clients->Trier(Liste::SortType::ID, true);
+			break;
+		case '2': TrierListe("Numéro d'abonnement", "décroissant");
+			clients->Trier(Liste::SortType::ID, false);
+			break;
+		case '3': TrierListe("Nom abonné", "croissant");
+			clients->Trier(Liste::SortType::NOM, true);
+			break;
+		case '4': TrierListe("Nom abonné", "décroissant");
+			clients->Trier(Liste::SortType::NOM, false);
+			break;
+		case '5': TrierListe("Date abonnement", "croissant");
+			clients->Trier(Liste::SortType::DATE, true);
+			break;
+		case '6': TrierListe("Date abonnement", "décroissant");
+			clients->Trier(Liste::SortType::DATE, false);
+			break;
+		case '7': TrierListe("Publication", "croissant");
+			clients->Trier(Liste::SortType::TITRE, true);
+			break;
+		case '8': TrierListe("Publication", "décroissant");
+			clients->Trier(Liste::SortType::TITRE, false);
+			break;
 		default: break;
 		}
 	}
@@ -608,31 +624,45 @@ void EcranBienvenue()
 //-------------------------------------
 void AfficherListeComplete(string option)
 {
-
+	Noeud* current = clients->getPremier();
 	string FicOut;
 
 	if (option == "fichier")
 	{
+		ofstream stream;
 		EcranBienvenue();
 		cout << "Nom du fichier qui recevra la liste:";
 		cin >> FicOut;
+		stream.open(FicOut, ios::out);
 		cout << "Ecriture de la liste complète en cours...\n";
+		while (current)
+		{
+			stream << current->pInfo->getId() << ";";
+			stream << current->pInfo->getPrenom() << ";";
+			stream << current->pInfo->getNom() << ";";
+			stream << current->pInfo->getTitre() << ";";
+			stream << current->pInfo->getAdresse() << ";";
+			stream << current->pInfo->getDebutAbonnement().ToString();
+			stream << endl;
+		}
 		cout << "Écriture de 475 abonnements terminée. Disponible dans le fichier " << FicOut << "\n";
 	}
 	else
 	{
 		cout << "Num   Nom                  Prenom               Publication                                Dates   \n";
 		cout << "-----------------------------------------------------------------------------------------------------\n";
-		for (int i = 1; i < 1000; i++)
+		for (unsigned int i = 1; i < clients->getCompteur(); i++)
 		{
 			if ((i % 50 == 0) && (option == "ecran"))
 				system("pause");
 			cout << i << " ";
-			cout << "  Abramovitch        ";
-			cout << "Iossef               ";
-			cout << "La vie en rouge     ";
-			cout << "1234 Place Rouge                         ";
-			cout << "2003-07-25 " << endl;
+			cout << "  " << current->pInfo->getNom() << "        ";
+			cout << current->pInfo->getPrenom() << "               ";
+			cout << current->pInfo->getTitre() << "     ";
+			cout << current->pInfo->getAdresse() << "                         ";
+			current->pInfo->getDebutAbonnement().Affiche();
+			cout << " " << endl;
+			current = current->pNext;
 		}
 	}
 	AffichageTermine();

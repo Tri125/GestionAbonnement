@@ -22,6 +22,11 @@ Liste::~Liste()
 	}
 }
 
+Noeud* Liste::getPremier()
+{
+	return premier;
+}
+
 void Liste::Ajouter(Noeud* n)
 {
 	compteur++;
