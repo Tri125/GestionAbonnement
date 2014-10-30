@@ -65,7 +65,6 @@ Liste* clients = new Liste();
 //-------------------------------------
 void main()
 {
-	setlocale(LC_ALL, "");
 	srand((unsigned int)time(NULL));
 	EcranBienvenue();
 	char Choix;
@@ -426,23 +425,43 @@ char MenuTrier()
 void Supprimer()
 {
 	string NumAbonnement;
+	bool erreur = false;
 	char Choix;
+	unsigned int id;
 
-	EcranBienvenue();
-	cout << "\n\n\n\tNuméro d'abonnement à supprimer:";
-	cin >> NumAbonnement;
-	cout << "-------------------------------------------\n";
-	cout << "\tNom\t\t:Abramovitch" << endl;
-	cout << "\tPrénom\t\t:Iossef" << endl;
-	cout << "\tPublication\t:La semaine hebdo" << endl;
-	cout << "\tAdresse\t\t:1234 Place Rouge" << endl;
-	cout << "\tDate abonnement\t:2003-07-25" << endl << endl;
-	cout << "-------------------------------------------\n";
-
+	do
+	{
+		try
+		{
+			EcranBienvenue();
+			cout << "\n\n\n\tNuméro d'abonnement à supprimer:";
+			cin >> NumAbonnement;
+			erreur = false;
+			id = stol(NumAbonnement);
+		}
+		catch (invalid_argument&)
+		{
+			cout << endl;
+			cout << "\n\tErreur: Numéro d'abonnement n'est pas un entier.\n" << endl;
+			system("pause");
+			erreur = true;
+		}
+	} while (erreur);
+	Abonnement* cible = clients->RechercheAbonnement(id);
+	if (!cible)
+	{
+		cout << "\n\tErreur: Aucun Abonnement trouvé\n";
+		system("pause");
+		return;
+	}
+	cible->AffichageDetailer();
 	Choix = Confirmation("Voulez vous le supprimer?");
 	switch (toupper(Choix))
 	{
-	case 'C': MessageDeConfirmation(); break;
+	case 'C': 
+		clients->Supprimer(id);
+		MessageDeConfirmation(); 
+		break;
 	default:break;
 	}
 }
@@ -512,7 +531,7 @@ void EcranBienvenue()
 		cout << ligneH;
 	cout << coinHD << endl;
 	cout << ligneV << "                                                " << ligneV << endl;
-	cout << ligneV << "  Les productions Votre Pr\x82nom Nom inc          " << ligneV << endl;
+	cout << ligneV << "     Les productions "" inc        " << ligneV << endl;
 	cout << ligneV << "                                                " << ligneV << endl;
 	cout << ligneV << "     Syst\x8Ame de gestion des abonnements         " << ligneV << endl;
 	cout << ligneV << "                                                " << ligneV << endl;

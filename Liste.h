@@ -13,16 +13,16 @@ public:
 	void Ajouter(Noeud*);
 	void Supprimer(unsigned int);
 	void Trier(SortType, bool);
-	Noeud* Recherche(unsigned int);
 	unsigned int getCompteur();
 	void Vidage();
 	void Afficher();
+	Abonnement* RechercheAbonnement(unsigned int);
 
 private:
 
 	unsigned int compteur;
 	Noeud* premier;
-
+	Noeud* Recherche(unsigned int);
 	Noeud* SortedMerge(Noeud*, Noeud*, SortType, bool);
 	void MergeSort(Noeud**, SortType, bool);
 	void FrontBackSplit(Noeud*, Noeud**, Noeud**);

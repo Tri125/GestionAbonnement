@@ -10,6 +10,7 @@ private:
 public:
 
 	string ToString();
+	void AffichageDetailer();
 
 #pragma region Constructeur
 	Abonnement();

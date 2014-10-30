@@ -6,6 +6,23 @@ Abonnement::Abonnement()
 	id = -1;
 }
 
+void Abonnement::AffichageDetailer()
+{
+	cout << "-------------------------------------------\n";
+	cout << "\tNom\t\t:";
+	cout << nom << endl;
+	cout << "\tPrénom\t\t:";
+	cout << prenom << endl;
+	cout << "\tPublication\t:";
+	cout << titre << endl;
+	cout << "\tAdresse\t\t:";
+	cout << adresse << endl;
+	cout << "\tDate abonnement\t:";
+	debutAbonnement.Affiche();
+	cout << endl << endl;
+	cout << "-------------------------------------------\n";
+}
+
 Abonnement::Abonnement(int i, string p, string n, string t, string adr, DateEpoch date)
 {
 	id = i;

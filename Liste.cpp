@@ -25,7 +25,8 @@ Liste::~Liste()
 void Liste::Ajouter(Noeud* n)
 {
 	compteur++;
-	premier->pBack = n;
+	if (premier)
+		premier->pBack = n;
 	n->pNext = premier;
 	premier = n;
 }
@@ -65,6 +66,20 @@ Noeud* Liste::Recherche(unsigned int id)
 		if (courant->pInfo->getId() == id)
 		{
 			return courant;
+		}
+		courant = courant->pNext;
+	}
+	return nullptr;
+}
+
+Abonnement* Liste::RechercheAbonnement(unsigned int id)
+{
+	Noeud* courant = premier;
+	while (courant)
+	{
+		if (courant->pInfo->getId() == id)
+		{
+			return courant->pInfo;
 		}
 		courant = courant->pNext;
 	}

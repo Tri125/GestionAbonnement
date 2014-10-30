@@ -300,6 +300,6 @@ unsigned int GenererGUID(Liste* liste)
 		//Max étant la valeur maximal d'un unsigned int
 		guid = rand() % 4294967296;
 		currentTry++;
-	} while (liste->Recherche(guid));
+	} while (liste->RechercheAbonnement(guid));
 	return guid;
 }
