@@ -66,7 +66,7 @@ Liste* clients = new Liste();
 void main()
 {
 	setlocale(LC_ALL, "");
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 	EcranBienvenue();
 	char Choix;
 	do
@@ -729,7 +729,7 @@ void Teste()
 	l.Ajouter(b);
 	l.Ajouter(f);
 
-	l.Ajouter(a);
+	//l.Ajouter(a);
 
 
 
@@ -742,5 +742,5 @@ void Teste()
 	cout << endl;
 	l.Trier(Liste::SortType::ID, false);
 	l.Afficher();
-	//system("pause");
+	system("pause");
 }

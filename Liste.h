@@ -23,8 +23,6 @@ private:
 	unsigned int compteur;
 	Noeud* premier;
 
-	//Insert de O(1) for the win!
-	Noeud* dernier;
 	Noeud* SortedMerge(Noeud*, Noeud*, SortType, bool);
 	void MergeSort(Noeud**, SortType, bool);
 	void FrontBackSplit(Noeud*, Noeud**, Noeud**);
