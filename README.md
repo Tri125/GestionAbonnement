@@ -1,7 +1,7 @@
-OOP_TP3
-=======
-
 Logiciel de gestion d'abonnements
+=======
+Écrit sous C++11.
+GCC 4.9 (regex utilisé et implémenté à partir de cette version)
 
 TODO
 
