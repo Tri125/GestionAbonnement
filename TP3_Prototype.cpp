@@ -66,7 +66,6 @@ Liste* clients = new Liste();
 int main()
 {
 	srand((unsigned int)time(NULL));
-	EcranBienvenue();
 	char Choix;
 	do
 	{
