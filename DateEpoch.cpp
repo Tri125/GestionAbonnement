@@ -77,34 +77,34 @@ void DateEpoch::ConvertFormatToEpoch()
 }
 
 //Définission des opérateurs de comparaisons
-bool DateEpoch::operator< (DateEpoch& rh)
+bool DateEpoch::operator< (const DateEpoch& rh)
 {
 	//Epoch étant le nombre de seconde écoulé depuis 1970, on peut le comparé directement
 	return this->Epoch < rh.Epoch;
 }
 
-bool DateEpoch::operator== (DateEpoch& rh)
+bool DateEpoch::operator== (const DateEpoch& rh)
 {
 
 	return this->Epoch == rh.Epoch;
 }
 
-bool DateEpoch::operator<= (DateEpoch& rh)
+bool DateEpoch::operator<= (const DateEpoch& rh)
 {
 	return this->Epoch <= rh.Epoch;
 }
 
-bool DateEpoch::operator!= (DateEpoch& rh)
+bool DateEpoch::operator!= (const DateEpoch& rh)
 {
 	return this->Epoch != rh.Epoch;
 }
 
-bool DateEpoch::operator>= (DateEpoch& rh)
+bool DateEpoch::operator>= (const DateEpoch& rh)
 {
 	return this->Epoch >= rh.Epoch;
 }
 
-bool DateEpoch::operator> (DateEpoch& rh)
+bool DateEpoch::operator> (const DateEpoch& rh)
 {
 	return this->Epoch > rh.Epoch;
 }

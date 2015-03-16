@@ -63,7 +63,7 @@ Liste* clients = new Liste();
 //------------------------------------
 //
 //-------------------------------------
-void main()
+int main()
 {
 	srand((unsigned int)time(NULL));
 	EcranBienvenue();
@@ -83,6 +83,7 @@ void main()
 		}
 	} while (Choix != 'Q');
 	delete clients;
+	return 0;
 }
 
 //------------------------------------
@@ -148,7 +149,7 @@ void Modifier()
 		{
 			cout << endl;
 			cout << "\nErreur: Numéro d'abonnement n'est pas un entier.\n" << endl;
-			system("pause");
+			Pause();
 			erreur = true;
 		}
 	} while (erreur);
@@ -156,7 +157,7 @@ void Modifier()
 	if (!cible)
 	{
 		cout << "\nErreur: Abonnement introuvable.\n";
-		system("pause");
+		Pause();
 		return;
 	}
 	Choix = MenuModifier(NumAbonnement);
@@ -239,7 +240,7 @@ void ModifierAdresse(string Num)
 		{
 			erreur = true;
 			cout << "\t\tErreur: Adresse n'est pas situé entre 0 et 50 caractères\n";
-			system("pause");
+			Pause();
 		}
 	} while (erreur);
 
@@ -289,7 +290,7 @@ void ModifierPublication(string Num)
 		{
 			erreur = true;
 			cout << "\t\tErreur: Publication n'est pas situé entre 0 et 20 caractères\n";
-			system("pause");
+			Pause();
 		}
 
 	} while (erreur);
@@ -348,7 +349,7 @@ void ChargerFichier()
 	AjoutAvecFichier(clients, FicIn);
 	cout << "-- Chargement de " << FicIn << " en cours ...\n";
 	cout << "-- " << clients->getCompteur() - i << " abonnements ajoutés. Chargement terminé.\n\n";
-	system("pause");
+	Pause();
 }
 //------------------------------------
 //
@@ -409,7 +410,7 @@ void MessageDeConfirmation()
 {
 	EcranBienvenue();
 	cout << "\n\n\t-*-*-*-*Opération traitée avec succès-*-*-*-*\n\n\n";
-	system("pause");
+	Pause();
 }
 
 //------------------------------------
@@ -473,7 +474,7 @@ void TrierListe(string Critere, string Ordre)
 	cout << "\n\nTri " << Ordre << " selon " << Critere << " en cours ...";
 	cout << "\nTri complété\n";
 	cout << "---------------------------------------------\n\n";
-	system("pause");
+	Pause();
 }
 
 char MenuTrier()
@@ -521,7 +522,7 @@ void Supprimer()
 		{
 			cout << endl;
 			cout << "\n\tErreur: Numéro d'abonnement n'est pas un entier.\n" << endl;
-			system("pause");
+			Pause();
 			erreur = true;
 		}
 	} while (erreur);
@@ -529,7 +530,7 @@ void Supprimer()
 	if (!cible)
 	{
 		cout << "\n\tErreur: Aucun Abonnement trouvé\n";
-		system("pause");
+		Pause();
 		return;
 	}
 	cible->AffichageDetailer();
@@ -602,7 +603,7 @@ void EcranBienvenue()
 	char ligneH = (char)205;
 	char ligneV = (char)186;
 
-	system("cls");
+	//system("cls");
 	setlocale(LC_ALL, "C");
 	cout << coinHG;
 	for (int i = 0; i < 48; i++)
@@ -658,7 +659,7 @@ void AfficherListeComplete(string option)
 		for (unsigned int i = 0; i < clients->getCompteur(); i++)
 		{
 			if ((i % 50 == 0) && (option == "ecran"))
-				system("pause");
+				Pause();
 			cout << current->pInfo->getId() << " ";
 			cout << "  " << current->pInfo->getNom() << "        ";
 			cout << current->pInfo->getPrenom() << "               ";
@@ -797,7 +798,7 @@ void AfficheIntervDate(string option)
 	catch (runtime_error& e)
 	{
 		cout << e.what() << endl;
-		system("pause");
+		Pause();
 		return;
 	}
 
@@ -1025,7 +1026,7 @@ void AfficherUnAbonnement()
 	if (!cible)
 	{
 		cout << "\nAbonnement introuvable.\n";
-		system("pause");
+		Pause();
 		return;
 	}
 	cible->AffichageDetailer();
@@ -1038,5 +1039,5 @@ void AfficherUnAbonnement()
 void AffichageTermine()
 {
 	cout << "\n\t----------FIN---------------\n\n\n";
-	system("pause");
+	Pause();
 }

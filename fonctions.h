@@ -22,3 +22,4 @@ bool isValidAdresse(string);
 bool isValidTitre(string);
 bool ValidationInteractif(string, string, string, string, DateEpoch);
 unsigned int GenererGUID(Liste*);
+void Pause();

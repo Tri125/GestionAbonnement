@@ -74,7 +74,7 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
 			cout << endl;
 			cout << "Erreur: Numéro d'abonnement n'est pas un entier." << endl;
 			cout << "Fichier: " << nomFichier << endl << "Ligne: " << nbLigne << endl;
-			system("pause");
+			Pause();
 			continue;
 		}
 
@@ -85,7 +85,7 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
 			cout << endl;
 			cout << "Erreur: " << e.what() << endl;
 			cout << "Fichier: " << nomFichier << endl << "Ligne: " << nbLigne << endl;
-			system("pause");
+			Pause();
 			continue;
 		}
 
@@ -202,11 +202,11 @@ Utilise une expression régulière pour valider le format.
 DateEpoch ValidationDate(string date)
 {
 	// 0000-00-00
-	const string pattern = "\\d\\d\\d\\d-\\d\\d-\\d\\d";
+	const string pattern = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	//Les résultats seront enregistrés dans le cmatch.
 	cmatch match;
 	//Charge le moteur regex avec le motif et en spécifiant la nomenclature ECMAScript
-	regex dateRegex(pattern, regex_constants::ECMAScript);
+	regex dateRegex(pattern, regex_constants::extended);
 	//Lance le moteur regex! regex_match avec une cible, un cmatch pour mettre les résultats et une regex pour trouver les résultats.
 	regex_match(date.c_str(), match, dateRegex);
 
@@ -302,7 +302,7 @@ bool ValidationInteractif(string prenom, string nom, string titre, string adress
 	}
 
 	if (!valide)
-		system("pause");
+		Pause();
 	return valide;
 }
 
@@ -329,7 +329,7 @@ void AjoutInteractif(Liste* liste, string prenom, string nom, string titre, stri
 		//Est une mauvaise idée puisque si le numéro 0 est déjà utilisé, les opérations de suppression, de recherche et de modification
 		//sera brisé.
 		cout << endl << "\nErreur: Le numéro 0 lui sera assigné par défault\n";
-		system("pause");
+		Pause();
 	}
 	liste->Ajouter(new Noeud(id, prenom, nom, titre, adresse, date));
 }
@@ -371,4 +371,11 @@ bool isValidTitre(string titre)
 	if (titre.length() > 0 && titre.length() <= 20)
 		return true;
 	return false;
+}
+
+void Pause()
+{
+	cout << "Appuyer sur une touche pour continuer.";
+	cin.sync();
+	cin.get();
 }
