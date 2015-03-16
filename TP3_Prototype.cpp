@@ -375,7 +375,6 @@ void AjoutInteractif()
 		cout << "Adresse\t\t:";
 		getline(cin, Adresse);
 
-		DateAdhesion = DateEpoch();
 		cout << "Publication\t:";
 		getline(cin, Publication);
 	} while (!ValidationInteractif(Prenom, Nom, Publication, Adresse, DateAdhesion));
