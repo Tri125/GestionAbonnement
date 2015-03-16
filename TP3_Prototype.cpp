@@ -610,7 +610,7 @@ void EcranBienvenue()
 	cout << ligneV << "                                                " << ligneV << endl;
 	cout << ligneV << "     Les productions                 inc        " << ligneV << endl;
 	cout << ligneV << "                                                " << ligneV << endl;
-	cout << ligneV << "     Syst\x8Ame de gestion des abonnements         " << ligneV << endl;
+	cout << ligneV << "     Système de gestion des abonnements         " << ligneV << endl;
 	cout << ligneV << "                                                " << ligneV << endl;
 	cout << coinBG;
 	for (int i = 0; i < 48; i++)
