@@ -60,14 +60,14 @@ void Liste::Supprimer(unsigned int id)
 	}
 }
 
-//Échange les pInfo des deux Noeuds passé en paramètres.
+//Ã‰change les pInfo des deux Noeuds passÃ© en paramÃ¨tres.
 void Liste::Swap(Noeud* first, Noeud* second)
 {
 	swap(first->pInfo, second->pInfo);
 }
 
-//D'après un unsigned int, recherche dans les Noeuds de la Liste 
-//pour un Abonnement avec le même numéro. Retourne le pointeur du Noeud si trouvé, sinon nullptr
+//D'aprÃ¨s un unsigned int, recherche dans les Noeuds de la Liste 
+//pour un Abonnement avec le mÃªme numÃ©ro. Retourne le pointeur du Noeud si trouvÃ©, sinon nullptr
 Noeud* Liste::Recherche(unsigned int id)
 {
 	Noeud* courant = premier;
@@ -83,8 +83,8 @@ Noeud* Liste::Recherche(unsigned int id)
 }
 
 
-//D'après un unsigned int, recherche dans les Noeuds de la Liste 
-//pour un Abonnement avec le même numéro. Retourne le pointeur de l'Abonnement , sinon nullptr
+//D'aprÃ¨s un unsigned int, recherche dans les Noeuds de la Liste 
+//pour un Abonnement avec le mÃªme numÃ©ro. Retourne le pointeur de l'Abonnement , sinon nullptr
 Abonnement* Liste::RechercheAbonnement(unsigned int id)
 {
 	Noeud* courant = premier;
@@ -123,9 +123,9 @@ unsigned int Liste::getCompteur()
 
 
 /*
-Méthode qui appel la méthode de MergeSort.
-SortType est un ENUM pour spécifier sur qu'elle donnée des Abonnements que l'on trie.
-Le bool pour spécifier si le trie sera en ordre croissant ou non (décroissant).
+MÃ©thode qui appel la mÃ©thode de MergeSort.
+SortType est un ENUM pour spÃ©cifier sur qu'elle donnÃ©e des Abonnements que l'on trie.
+Le bool pour spÃ©cifier si le trie sera en ordre croissant ou non (dÃ©croissant).
 */
 void Liste::Trier(SortType type, bool croissant)
 {
@@ -140,29 +140,29 @@ void Liste::Trier(SortType type, bool croissant)
 /*
 
 Source: http://www.sanfoundry.com/cpp-program-implement-merge-sort-linked-list/
-Implémentation de Manish Bhojasia
+ImplÃ©mentation de Manish Bhojasia
 
-MergeSort, implémentation récursive (TopDown).
-Complexité de cas moyen, meilleur cas et pire cas de O(n log n)
+MergeSort, implÃ©mentation rÃ©cursive (TopDown).
+ComplexitÃ© de cas moyen, meilleur cas et pire cas de O(n log n)
 
 Change les pointeurs entre les Noeuds.
 Prend un pointeur d'un pointeur d'un Noeud (L'adresse d'un objet pointeur pointant vers un Noeud, dans note cas le premier Noeud de la Liste)
-SortType pour spécifier sur qu'elle donnée le trie s'applique.
-bool pour spécifier si l'algorithme doit trier en ordre croissant ou non.
+SortType pour spÃ©cifier sur qu'elle donnÃ©e le trie s'applique.
+bool pour spÃ©cifier si l'algorithme doit trier en ordre croissant ou non.
 */
 void Liste::MergeSort(Noeud** headRef, SortType type, bool croissant)
 {
 	Noeud* head = *headRef;
 	Noeud* left;
 	Noeud* right;
-	//Liste non existante ou une Liste d'un seul élément est déjà trié.
+	//Liste non existante ou une Liste d'un seul Ã©lÃ©ment est dÃ©jÃ  triÃ©.
 	if ((head == NULL) || head->pNext == NULL)
 	{
 		return;
 	}
 	//Divise les Noeuds en deux
 	FrontBackSplit(head, &left, &right);
-	//Appel récursif
+	//Appel rÃ©cursif
 	MergeSort(&left, type, croissant);
 	MergeSort(&right, type, croissant);
 	//Trie et Fusion
@@ -172,7 +172,7 @@ void Liste::MergeSort(Noeud** headRef, SortType type, bool croissant)
 
 
 /*
-Méthode qui avec deux pointeurs sur des objets Noeuds, les positionnes en ordre (pNext, pBack) selon les critères de sélection
+MÃ©thode qui avec deux pointeurs sur des objets Noeuds, les positionnes en ordre (pNext, pBack) selon les critÃ¨res de sÃ©lection
 SortType type et bool croissant.
 */
 Noeud* Liste::SortedMerge(Noeud* left, Noeud* right, SortType type, bool croissant)
@@ -183,7 +183,7 @@ Noeud* Liste::SortedMerge(Noeud* left, Noeud* right, SortType type, bool croissa
 	else
 		if (right == NULL)
 			return left;
-	//Évalue selon le type de trie et si l'ordre croissant est désiré.
+	//Ã‰value selon le type de trie et si l'ordre croissant est dÃ©sirÃ©.
 	if (EvaluateSortType(left, right, type, croissant))
 	{
 		result = left;
@@ -204,15 +204,15 @@ Noeud* Liste::SortedMerge(Noeud* left, Noeud* right, SortType type, bool croissa
 
 /*
 Retourne true or false.
-Évaluation selon SortType type et bool croissant pour déterminer si les données d'Abonnement du
-Noeud left est plus grand ou plus petit que les données d'Abonnement du Noeud right.
+Ã‰valuation selon SortType type et bool croissant pour dÃ©terminer si les donnÃ©es d'Abonnement du
+Noeud left est plus grand ou plus petit que les donnÃ©es d'Abonnement du Noeud right.
 
 */
 bool Liste::EvaluateSortType(Noeud* left, Noeud* right, SortType type, bool croissant)
 {
 	switch (type)
 	{
-		//Trie sur le numéro du client
+		//Trie sur le numÃ©ro du client
 	case SortType::ID:
 		if (croissant)
 			return (left->pInfo->getId() <= right->pInfo->getId());
@@ -236,7 +236,7 @@ bool Liste::EvaluateSortType(Noeud* left, Noeud* right, SortType type, bool croi
 			return (left->pInfo->getDebutAbonnement() <= right->pInfo->getDebutAbonnement());
 		return (left->pInfo->getDebutAbonnement() >= right->pInfo->getDebutAbonnement());
 		break;
-		//Ne devrait pas ce produire sauf si on rajoute un élément dans l'ENUM SortType et que l'on oublie de l'implémenter dans EvaluateSortType()
+		//Ne devrait pas ce produire sauf si on rajoute un Ã©lÃ©ment dans l'ENUM SortType et que l'on oublie de l'implÃ©menter dans EvaluateSortType()
 	default:
 		cout << "Liste::EvaluateSortType : NotImplemented Argument";
 		return false;
@@ -246,7 +246,7 @@ bool Liste::EvaluateSortType(Noeud* left, Noeud* right, SortType type, bool croi
 }
 
 /*
-Sépare les liens entre les noeuds.
+SÃ©pare les liens entre les noeuds.
 */
 void Liste::FrontBackSplit(Noeud* source, Noeud** frontRef, Noeud** backRef)
 {
@@ -279,7 +279,7 @@ void Liste::FrontBackSplit(Noeud* source, Noeud** frontRef, Noeud** backRef)
 	}
 }
 
-//Affiche tout les éléments de la Liste.
+//Affiche tout les Ã©lÃ©ments de la Liste.
 void Liste::Afficher()
 {
 	Noeud* courant = premier;

@@ -6,7 +6,7 @@ public:
 
 	void Swap(Noeud*, Noeud*);
 
-	//ENUM pour bien indiquer le type de Trie désiré.
+	//ENUM pour bien indiquer le type de Trie dÃ©sirÃ©.
 	enum class SortType
 	{
 		ID, NOM, DATE, TITRE
