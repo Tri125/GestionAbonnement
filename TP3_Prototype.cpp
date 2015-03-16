@@ -600,8 +600,13 @@ void EcranBienvenue()
 	char coinBD = (char)188;
 	char ligneH = (char)205;
 	char ligneV = (char)186;
-
-	//system("cls");
+#ifdef _WIN32
+	system("cls");
+#elif defined __linux__
+        system("clear");
+#else
+        cout << string(20,'\n');
+#endif
 	setlocale(LC_ALL, "C");
 	cout << coinHG;
 	for (int i = 0; i < 48; i++)
