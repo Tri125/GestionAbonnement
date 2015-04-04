@@ -10,14 +10,14 @@ Abonnement::Abonnement()
 }
 
 /*
-MÃ©thode pour avoir un affichage plus graphique des informations de l'abonnement.
+Méthode pour avoir un affichage plus graphique des informations de l'abonnement.
 */
 void Abonnement::AffichageDetailer()
 {
 	cout << "-------------------------------------------\n";
 	cout << "\tNom\t\t:";
 	cout << nom << endl;
-	cout << "\tPrÃ©nom\t\t:";
+	cout << "\tPrénom\t\t:";
 	cout << prenom << endl;
 	cout << "\tPublication\t:";
 	cout << titre << endl;

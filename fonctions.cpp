@@ -3,27 +3,27 @@
 #include "librairie.h"
 
 
-// Exception lorsqu'une ligne a plus que 6 champs de donnÃ©es.
+// Exception lorsqu'une ligne a plus que 6 champs de données.
 struct ManyDataField : public exception
 {
 	const char * what() const throw ()
 	{
-		return "Plus que 6 champs de donnÃ©es dÃ©tectÃ©s";
+		return "Plus que 6 champs de données détectés";
 	}
 };
 
 
-// Exception lorsqu'une ligne a moins que 6 champs de donnÃ©es.
+// Exception lorsqu'une ligne a moins que 6 champs de données.
 struct NotEnoughDataField : public exception
 {
 	const char * what() const throw ()
 	{
-		return "Moins que 6 champs de donnÃ©es dÃ©tectÃ©s";
+		return "Moins que 6 champs de données détectés";
 	}
 };
 
 // Fonction qui apartir d'un pointeur vers une Liste et d'un nom de fichier
-// ouvre un flux d'entrÃ©e pour faire la lecture du fichier et populer la Liste de Noeuds.
+// ouvre un flux d'entrée pour faire la lecture du fichier et populer la Liste de Noeuds.
 void AjoutAvecFichier(Liste* liste, string nomFichier)
 {
 	ifstream ficIn;
@@ -31,7 +31,7 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
 	string ligneCourante;
 	int nbLigne = 0;
 
-	//Si l'ouverture Ã©choue, demande Ã  nouveau nom de fichier.
+	//Si l'ouverture échoue, demande à nouveau nom de fichier.
 	while (!ficIn.is_open())
 	{
 		cout << "Erreur de lecture.\n";
@@ -47,13 +47,13 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
 		getline(ficIn, ligneCourante);
 
 		size_t pos = ligneCourante.find_first_not_of("\n \t");
-		//find_first_not_of peut retourner string::npos (constante Ã©valuÃ© Ã  -1) si rien n'a Ã©tÃ© trouvÃ©.
-		//Si c'est le cas, ligne vide ou mal formatÃ©, continue pour prendre la prochaine ligne.
+		//find_first_not_of peut retourner string::npos (constante évalué à -1) si rien n'a été trouvé.
+		//Si c'est le cas, ligne vide ou mal formaté, continue pour prendre la prochaine ligne.
 		if (pos == string::npos)
 		{
 			continue;
 		}
-		// Ligne avec les espaces en dÃ©but retirÃ©.
+		// Ligne avec les espaces en début retiré.
 		ligneCourante = ligneCourante.substr(pos);
 
 		//Commence par un hashtag, donc ligne de commentaire et on ignore
@@ -63,16 +63,16 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
 		{
 			//Envois la ligne dans la fonction TraitementLigne qui retourne un pointeur sur un objet Noeud
 			// et le rajoute dans la liste.
-			// TraitementLigne pour lancer une exception si la ligne n'est pas dans un format pour crÃ©er un objet Noeud.
+			// TraitementLigne pour lancer une exception si la ligne n'est pas dans un format pour créer un objet Noeud.
 			liste->Ajouter(TraitementLigne(ligneCourante));
 		}
 		//Exception lancer par la famille de fonctions stol  (string to long) et autres.
-		// Est seulement utilisÃ© pour convertir le numÃ©ro de client.
+		// Est seulement utilisé pour convertir le numéro de client.
 		catch (invalid_argument&)
 		{
-			//Affiche le nom du fichier et la ligne oÃ¹ ce trouve l'erreur.
+			//Affiche le nom du fichier et la ligne où ce trouve l'erreur.
 			cout << endl;
-			cout << "Erreur: NumÃ©ro d'abonnement n'est pas un entier." << endl;
+			cout << "Erreur: Numéro d'abonnement n'est pas un entier." << endl;
 			cout << "Fichier: " << nomFichier << endl << "Ligne: " << nbLigne << endl;
 			Pause();
 			continue;
@@ -81,7 +81,7 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
 		//Autres exceptions
 		catch (exception& e)
 		{
-			//Affiche le nom du fichier et la ligne oÃ¹ ce trouve l'erreur.
+			//Affiche le nom du fichier et la ligne où ce trouve l'erreur.
 			cout << endl;
 			cout << "Erreur: " << e.what() << endl;
 			cout << "Fichier: " << nomFichier << endl << "Ligne: " << nbLigne << endl;
@@ -102,16 +102,16 @@ void AjoutAvecFichier(Liste* liste, string nomFichier)
 https://stackoverflow.com/questions/1120140/how-can-i-read-and-parse-csv-files-in-c
 Solution de Loki Astari
 
-Extrait les champs de donnÃ©es d'une string de format csv, les valides et les testes pour crÃ©er un objet Noeud
+Extrait les champs de données d'une string de format csv, les valides et les testes pour créer un objet Noeud
 et retourner un pointeur du dit objet.
 */
 Noeud* TraitementLigne(string ligne)
 {
-	//CaractÃ¨re sÃ©parant les champs
+	//Caractère séparant les champs
 	const char SEPARATING_SYMBOL = ';';
 	const int NOMBRE_CHAMPS = 6;
 
-	//Chaque string du vecteur est un champs de donnÃ©e extrait de la ligne.
+	//Chaque string du vecteur est un champs de donnée extrait de la ligne.
 	vector<string> client;
 	//stringstream simplifie l'extraction de beaucoup d'efforts.
 	stringstream ss(ligne);
@@ -119,17 +119,17 @@ Noeud* TraitementLigne(string ligne)
 	unsigned int id = 0;
 	double tmp = 0;
 
-	//Extraction de chaque champs sÃ©parÃ© par SEPARATING_SYMBOL et l'enregistre dans data.
+	//Extraction de chaque champs séparé par SEPARATING_SYMBOL et l'enregistre dans data.
 	while (getline(ss, data, SEPARATING_SYMBOL))
 	{
-		//Met la donnÃ©e dans le vector.
+		//Met la donnée dans le vector.
 		client.push_back(data);
 	}
 
-	//Lance une exception si plus que NOMBRE_CHAMPS a Ã©tÃ© extrait de la ligne
+	//Lance une exception si plus que NOMBRE_CHAMPS a été extrait de la ligne
 	if (client.size() > NOMBRE_CHAMPS)
 		throw ManyDataField();
-	//Lance une exception si moins que NOMBRE_CHAMPS a Ã©tÃ© extrait de la ligne
+	//Lance une exception si moins que NOMBRE_CHAMPS a été extrait de la ligne
 	if (client.size() < NOMBRE_CHAMPS)
 		throw NotEnoughDataField();
 
@@ -140,24 +140,24 @@ Noeud* TraitementLigne(string ligne)
 		switch (i)
 		{
 		case (int)DataType::ID:
-			//string to double et enregistre le rÃ©sultat dans tmp;
-			//Lance une exception invalid_argument si stod Ã©choue.
+			//string to double et enregistre le résultat dans tmp;
+			//Lance une exception invalid_argument si stod échoue.
 			tmp = stod(client[i]);
 			if (tmp < 0)
-				throw runtime_error("Le numÃ©ro client est nÃ©gatif");
+				throw runtime_error("Le numéro client est négatif");
 			char precedent;
 			for (size_t index = 0; index < client[i].length(); index++)
 			{
-				//Essentiellement, teste pour voir si il y a un caractÃ¨re qui sÃ©pare les numÃ©ros.
-				//Est nÃ©cessaire, car stod va convertir la premiÃ¨re partie continue sans problÃ¨me malgrÃ© que le format soit innaceptable.
+				//Essentiellement, teste pour voir si il y a un caractère qui sépare les numéros.
+				//Est nécessaire, car stod va convertir la première partie continue sans problème malgré que le format soit innaceptable.
 				if (index == client[i].length() - 1)
 					break;
 				if (isspace(client[i][index]) && isdigit(precedent))
 					throw invalid_argument("");
 				precedent = client[i][index];
 			}
-			//stod Ã©choue pour les flottants sÃ©parÃ© par un point ".", mais ignore les virgules.
-			//Dois donc vÃ©rifier soit mÃªme pour ce cas.
+			//stod échoue pour les flottants séparé par un point ".", mais ignore les virgules.
+			//Dois donc vérifier soit même pour ce cas.
 			if (floor(tmp) == tmp && client[i].find(',') == string::npos)
 				id = stoul(client[i]);
 			else
@@ -165,72 +165,72 @@ Noeud* TraitementLigne(string ligne)
 			break;
 		case (int)DataType::PRENOM:
 			if (longueur <= 0 || longueur > 20)
-				throw runtime_error("Longueur Prenom n'est pas situÃ© entre 0 et 20 caractÃ¨res");
+				throw runtime_error("Longueur Prenom n'est pas situé entre 0 et 20 caractères");
 			break;
 		case (int)DataType::NOM:
 			if (longueur <= 0 || longueur > 20)
-				throw runtime_error("Longueur Nom n'est pas situÃ© entre 0 et 20 caractÃ¨res");
+				throw runtime_error("Longueur Nom n'est pas situé entre 0 et 20 caractères");
 			break;
 		case (int)DataType::TITRE:
 			if (longueur <= 0 || longueur > 20)
-				throw runtime_error("Longueur Titre n'est pas situÃ© entre 0 et 20 caractÃ¨res");
+				throw runtime_error("Longueur Titre n'est pas situé entre 0 et 20 caractères");
 			break;
 		case (int)DataType::ADRESSE:
 			if (longueur <= 0 || longueur > 50)
-				throw runtime_error("Longueur Adresse n'est pas situÃ© entre 0 et 50 caractÃ¨res");
+				throw runtime_error("Longueur Adresse n'est pas situé entre 0 et 50 caractères");
 			break;
 		case (int)DataType::DATE:
 			if (longueur != 10)
-				throw runtime_error("Longueur Date n'est pas 10 caractÃ¨res");
+				throw runtime_error("Longueur Date n'est pas 10 caractères");
 			break;
 		default:
-			throw runtime_error("fonctions.cpp TraitementLigne(), la longueur du champs aurait du Ãªtre dÃ©jÃ  validÃ©.");
+			throw runtime_error("fonctions.cpp TraitementLigne(), la longueur du champs aurait du être déjà validé.");
 			break;
 		}
 	}
-	//Lance ValidationDate pour obtenir un objet DateEpoch validÃ©.
+	//Lance ValidationDate pour obtenir un objet DateEpoch validé.
 	//Peut lancer des exceptions.
 	DateEpoch date = ValidationDate(client[(int)DataType::DATE]);
-	//CrÃ©ation d'un nouveau objet Noeud et retour de son pointeur.
+	//Création d'un nouveau objet Noeud et retour de son pointeur.
 	return new Noeud(id, client[1], client[2], client[3], client[4], date);
 }
 
 /*
-D'aprÃ¨s un string, vÃ©rifie si c'est d'un format YYYY-MM-DD pour crÃ©er un objet DateEpoch et le retourner.
-Utilise une expression rÃ©guliÃ¨re pour valider le format.
+D'après un string, vérifie si c'est d'un format YYYY-MM-DD pour créer un objet DateEpoch et le retourner.
+Utilise une expression régulière pour valider le format.
 */
 DateEpoch ValidationDate(string date)
 {
 	// 0000-00-00
 	const string pattern = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
-	//Les rÃ©sultats seront enregistrÃ©s dans le cmatch.
+	//Les résultats seront enregistrés dans le cmatch.
 	cmatch match;
-	//Charge le moteur regex avec le motif et en spÃ©cifiant la nomenclature ECMAScript
+	//Charge le moteur regex avec le motif et en spécifiant la nomenclature ECMAScript
 	regex dateRegex(pattern, regex_constants::extended);
-	//Lance le moteur regex! regex_match avec une cible, un cmatch pour mettre les rÃ©sultats et une regex pour trouver les rÃ©sultats.
+	//Lance le moteur regex! regex_match avec une cible, un cmatch pour mettre les résultats et une regex pour trouver les résultats.
 	regex_match(date.c_str(), match, dateRegex);
 
 	//Plus qu'un match, moins qu'un match? Ce n'est pas d'un format que l'on s'attend.
 	//Lance une exception
 	if (match.size() != 1)
 		throw runtime_error("N'est pas un format date valide");
-	//Le motif de la date maintenant validÃ©, on l'enregistre dans une string et l'on peut prendre certaine libertÃ© pour
-	//en extraire les annÃ©es, les mois et les jours.
+	//Le motif de la date maintenant validé, on l'enregistre dans une string et l'on peut prendre certaine liberté pour
+	//en extraire les années, les mois et les jours.
 	string validatedFormat = match[0].str();
 
 	int annee;
 	int mois;
 	int jour;
-	//La forme est dÃ©jÃ  validÃ© avec une regex. On peu donc ce permettre un peu de libertÃ© concernant la conversion sans avoir peur de lancer des exceptions.
+	//La forme est déjà validé avec une regex. On peu donc ce permettre un peu de liberté concernant la conversion sans avoir peur de lancer des exceptions.
 	annee = stoi(validatedFormat.substr(0, 4));
 	mois = stoi(validatedFormat.substr(5, 7));
 	jour = stoi(validatedFormat.substr(8));
 
-	//CrÃ©ation d'un objet DateEpoch
+	//Création d'un objet DateEpoch
 	DateEpoch validatedTime(annee, mois, jour);
-	//Si Epoch, le nombre de secondes depuis 1970, est Ã  -1, alors l'objet n'a pas reÃ§u une date qui peut Ãªtre reprÃ©sentÃ©.
+	//Si Epoch, le nombre de secondes depuis 1970, est à -1, alors l'objet n'a pas reçu une date qui peut être représenté.
 	if (validatedTime.Epoch == -1)
-		throw runtime_error("N'est pas une date qui peut Ãªtre reprÃ©sentÃ©");
+		throw runtime_error("N'est pas une date qui peut être représenté");
 
 	return validatedTime;
 }
@@ -264,7 +264,7 @@ bool ValidationInteractif(string prenom, string nom, string titre, string adress
 	if (taille <= 0 || taille > 20)
 	{
 		valide = false;
-		cout << "Longueur PrÃ©nom n'est pas situÃ© entre 0 et 20 caractÃ¨res";
+		cout << "Longueur Prénom n'est pas situé entre 0 et 20 caractères";
 		cout << endl;
 	}
 
@@ -273,7 +273,7 @@ bool ValidationInteractif(string prenom, string nom, string titre, string adress
 	if (taille <= 0 || taille > 20)
 	{
 		valide = false;
-		cout << "Longueur Nom n'est pas situÃ© entre 0 et 20 caractÃ¨res";
+		cout << "Longueur Nom n'est pas situé entre 0 et 20 caractères";
 		cout << endl;
 	}
 	taille = titre.length();
@@ -281,7 +281,7 @@ bool ValidationInteractif(string prenom, string nom, string titre, string adress
 	if (taille <= 0 || taille > 20)
 	{
 		valide = false;
-		cout << "Longueur Titre n'est pas situÃ© entre 0 et 20 caractÃ¨res";
+		cout << "Longueur Titre n'est pas situé entre 0 et 20 caractères";
 		cout << endl;
 	}
 
@@ -290,14 +290,14 @@ bool ValidationInteractif(string prenom, string nom, string titre, string adress
 	if (taille <= 0 || taille > 50)
 	{
 		valide = false;
-		cout << "Longueur Adresse n'est pas situÃ© entre 0 et 50 caractÃ¨res";
+		cout << "Longueur Adresse n'est pas situé entre 0 et 50 caractères";
 		cout << endl;
 	}
 
 	if (date.Epoch == -1)
 	{
 		valide = false;
-		cout << "N'est pas une date qui peut Ãªtre reprÃ©sentÃ©";
+		cout << "N'est pas une date qui peut être représenté";
 		cout << endl;
 	}
 
@@ -312,31 +312,31 @@ bool ValidationInteractif(string prenom, string nom, string titre, string adress
 //}
 
 /*
-Ã€ partir d'un pointeur vers un objet Liste, de 4 string et d'un objet DateEpoch, crÃ©e un objet Noeud et le rajoute dans l'objet Liste.
+À partir d'un pointeur vers un objet Liste, de 4 string et d'un objet DateEpoch, crée un objet Noeud et le rajoute dans l'objet Liste.
 */
 void AjoutInteractif(Liste* liste, string prenom, string nom, string titre, string adresse, DateEpoch date)
 {
 	unsigned int id = 0;
 	try
 	{
-		//Essaie de trouver un numÃ©ro client non utilisÃ©
+		//Essaie de trouver un numéro client non utilisé
 		id = GenererGUID(liste);
 	}
 	catch (runtime_error& e)
 	{
 		id = 0;
 		cout << e.what();
-		//Est une mauvaise idÃ©e puisque si le numÃ©ro 0 est dÃ©jÃ  utilisÃ©, les opÃ©rations de suppression, de recherche et de modification
-		//sera brisÃ©.
-		cout << endl << "\nErreur: Le numÃ©ro 0 lui sera assignÃ© par dÃ©fault\n";
+		//Est une mauvaise idée puisque si le numéro 0 est déjà utilisé, les opérations de suppression, de recherche et de modification
+		//sera brisé.
+		cout << endl << "\nErreur: Le numéro 0 lui sera assigné par défault\n";
 		Pause();
 	}
 	liste->Ajouter(new Noeud(id, prenom, nom, titre, adresse, date));
 }
 
 /*
-GÃ©nÃ¨re un unsigned int au hasard et vÃ©rifie si le nombre est dÃ©jÃ  utilisÃ© par un objet Abonnement dans la Liste.
-Si c'est le cas, tente une nouvelle gÃ©nÃ©ration au hasard.
+Génère un unsigned int au hasard et vérifie si le nombre est déjà utilisé par un objet Abonnement dans la Liste.
+Si c'est le cas, tente une nouvelle génération au hasard.
 */
 unsigned int GenererGUID(Liste* liste)
 {
@@ -347,11 +347,11 @@ unsigned int GenererGUID(Liste* liste)
 	{
 		if (currentTry > MAX_TRY)
 		{
-			//Ã€ dÃ©jÃ  essayÃ© MAX_TRY fois. Peut-Ãªtre qu'il ne reste plus de nombre libre qui peut Ãªtre reprÃ©sentÃ© par un unsigned int
-			//On que la liste est trop saturÃ© qu'il est difficile de ne pas gÃ©nÃ©rer un au hasard qui n'est pas dÃ©jÃ  utilisÃ©.
-			throw runtime_error("fonctions::GenererGUID impossible Ã  trouver un GUID dans un dÃ©lais acceptable.");
+			//À déjà essayé MAX_TRY fois. Peut-être qu'il ne reste plus de nombre libre qui peut être représenté par un unsigned int
+			//On que la liste est trop saturé qu'il est difficile de ne pas générer un au hasard qui n'est pas déjà utilisé.
+			throw runtime_error("fonctions::GenererGUID impossible à trouver un GUID dans un délais acceptable.");
 		}
-		//Max Ã©tant la valeur maximal d'un unsigned int
+		//Max étant la valeur maximal d'un unsigned int
 		guid = rand() % 4294967296;
 		currentTry++;
 	} while (liste->RechercheAbonnement(guid));

@@ -4,8 +4,8 @@
 //
 //  Par Alain Martel
 
-//  Ce programme est un prototype "hardcodÃ©" donnant un aperÃ§u de la fonctionalitÃ© 
-//  Ã  mettre en place pour le TP3.
+//  Ce programme est un prototype "hardcodé" donnant un aperçu de la fonctionalité 
+//  à mettre en place pour le TP3.
 //  
 //-------------------------------------
 
@@ -113,7 +113,7 @@ char MenuAjouter()
 	EcranBienvenue();
 	char Choix;
 	cout << "\n\nAjout d'abonnements\n\n";
-	cout << "\tF-Ã  partir d'un Fichier\n";
+	cout << "\tF-à partir d'un Fichier\n";
 	cout << "\tI-Interactivement\n";
 	cout << "\tQ-menu Principal\n";
 
@@ -140,14 +140,14 @@ void Modifier()
 			erreur = false;
 			EcranBienvenue();
 			cout << "\n\nModifications des informations d'un abonnement\n\n";
-			cout << "NumÃ©ro d'abonnement Ã  modifier:";
+			cout << "Numéro d'abonnement à modifier:";
 			cin >> NumAbonnement;
 			id = stol(NumAbonnement);
 		}
 		catch (invalid_argument&)
 		{
 			cout << endl;
-			cout << "\nErreur: NumÃ©ro d'abonnement n'est pas un entier.\n" << endl;
+			cout << "\nErreur: Numéro d'abonnement n'est pas un entier.\n" << endl;
 			Pause();
 			erreur = true;
 		}
@@ -176,7 +176,7 @@ void Vider()
 	char Choix;
 	EcranBienvenue();
 	cout << "\n\n\t";
-	Choix = Confirmation("Vous Ãªtes bien sÃ»r de vouloir vider la liste?");
+	Choix = Confirmation("Vous êtes bien sûr de vouloir vider la liste?");
 
 	switch (toupper(Choix))
 	{
@@ -196,7 +196,7 @@ char MenuModifier(string NumAbonnement)
 	Abonnement* cible;
 	char Choix;
 
-	//NumAbonnement dÃ©jÃ  convertie sans erreur Ã  l'appel prÃ©cÃ©dent. IdÃ©alement je changerais l'appel de fonction.
+	//NumAbonnement déjà convertie sans erreur à l'appel précédent. Idéalement je changerais l'appel de fonction.
 	id = stol(NumAbonnement);
 	cible = clients->RechercheAbonnement(id);
 	EcranBienvenue();
@@ -205,7 +205,7 @@ char MenuModifier(string NumAbonnement)
 	cout << "\tModifier:\n\n";
 	cout << "\t\tA-Adresse\n";
 	cout << "\t\tV-Publication\n";
-	cout << "\t\tQ-retour au menu prÃ©cÃ©dent\n";
+	cout << "\t\tQ-retour au menu précédent\n";
 	cout << "\t\tVotre choix:";
 	cin >> Choix;
 	return toupper(Choix);
@@ -222,7 +222,7 @@ void ModifierAdresse(string Num)
 	unsigned int id;
 	Abonnement* cible;
 	bool erreur = false;
-	//NumAbonnement dÃ©jÃ  convertie sans erreur Ã  l'appel prÃ©cÃ©dent. IdÃ©alement je changerais l'appel de fonction.
+	//NumAbonnement déjà convertie sans erreur à l'appel précédent. Idéalement je changerais l'appel de fonction.
 	id = stol(Num);
 	cible = clients->RechercheAbonnement(id);
 	getline(cin, tampon);
@@ -238,13 +238,13 @@ void ModifierAdresse(string Num)
 		if (!isValidAdresse(NeoAdresse))
 		{
 			erreur = true;
-			cout << "\t\tErreur: Adresse n'est pas situÃ© entre 0 et 50 caractÃ¨res\n";
+			cout << "\t\tErreur: Adresse n'est pas situé entre 0 et 50 caractères\n";
 			Pause();
 		}
 	} while (erreur);
 
 	EcranBienvenue();
-	cout << "\n\nNouvelle adresse proposÃ©e pour abonnement " << Num << "\n\n";
+	cout << "\n\nNouvelle adresse proposée pour abonnement " << Num << "\n\n";
 	cout << "-------------------------------------------\n";
 	cout << "\tAdresse\t\t:" << NeoAdresse << endl;
 	cout << "-------------------------------------------\n";
@@ -270,7 +270,7 @@ void ModifierPublication(string Num)
 	unsigned int id;
 	Abonnement* cible;
 	bool erreur = false;
-	//NumAbonnement dÃ©jÃ  convertie sans erreur Ã  l'appel prÃ©cÃ©dent. IdÃ©alement je changerais l'appel de fonction.
+	//NumAbonnement déjà convertie sans erreur à l'appel précédent. Idéalement je changerais l'appel de fonction.
 	id = stol(Num);
 	cible = clients->RechercheAbonnement(id);
 	getline(cin, tampon);
@@ -288,7 +288,7 @@ void ModifierPublication(string Num)
 		if (!isValidTitre(NeoPublication))
 		{
 			erreur = true;
-			cout << "\t\tErreur: Publication n'est pas situÃ© entre 0 et 20 caractÃ¨res\n";
+			cout << "\t\tErreur: Publication n'est pas situé entre 0 et 20 caractères\n";
 			Pause();
 		}
 
@@ -342,12 +342,12 @@ void ChargerFichier()
 	//char Choix;
 
 	EcranBienvenue();
-	cout << "\n\nAjout d'abonnements Ã  partir d'un fichier\n\n";
-	cout << "Fichier Ã  charger:";
+	cout << "\n\nAjout d'abonnements à partir d'un fichier\n\n";
+	cout << "Fichier à charger:";
 	cin >> FicIn;
 	AjoutAvecFichier(clients, FicIn);
 	cout << "-- Chargement de " << FicIn << " en cours ...\n";
-	cout << "-- " << clients->getCompteur() - i << " abonnements ajoutÃ©s. Chargement terminÃ©.\n\n";
+	cout << "-- " << clients->getCompteur() - i << " abonnements ajoutés. Chargement terminé.\n\n";
 	Pause();
 }
 //------------------------------------
@@ -369,7 +369,7 @@ void AjoutInteractif()
 		cout << "Nom\t\t:";
 		cin >> Nom;
 		getline(cin, tampon);
-		cout << "PrÃ©nom\t\t:";
+		cout << "Prénom\t\t:";
 		getline(cin, Prenom);
 		cout << "Adresse\t\t:";
 		getline(cin, Adresse);
@@ -382,7 +382,7 @@ void AjoutInteractif()
 	cout << "\n\nInfo du nouvel abonnement:\n\n";
 	cout << "-------------------------------------------\n";
 	cout << "\tNom\t\t:" << Nom << endl;
-	cout << "\tPrÃ©nom\t\t:" << Prenom << endl;
+	cout << "\tPrénom\t\t:" << Prenom << endl;
 	cout << "\tAdresse\t\t:" << Adresse << endl;
 	cout << "\tDate abonnement\t:";
 	DateAdhesion.Affiche();
@@ -407,7 +407,7 @@ void AjoutInteractif()
 void MessageDeConfirmation()
 {
 	EcranBienvenue();
-	cout << "\n\n\t-*-*-*-*OpÃ©ration traitÃ©e avec succÃ¨s-*-*-*-*\n\n\n";
+	cout << "\n\n\t-*-*-*-*Opération traitée avec succès-*-*-*-*\n\n\n";
 	Pause();
 }
 
@@ -437,28 +437,28 @@ void Trier()
 	{
 		switch (Choix)
 		{
-		case '1': TrierListe("NumÃ©ro d'abonnement", "croissant");
+		case '1': TrierListe("Numéro d'abonnement", "croissant");
 			clients->Trier(Liste::SortType::ID, true);
 			break;
-		case '2': TrierListe("NumÃ©ro d'abonnement", "dÃ©croissant");
+		case '2': TrierListe("Numéro d'abonnement", "décroissant");
 			clients->Trier(Liste::SortType::ID, false);
 			break;
-		case '3': TrierListe("Nom abonnÃ©", "croissant");
+		case '3': TrierListe("Nom abonné", "croissant");
 			clients->Trier(Liste::SortType::NOM, true);
 			break;
-		case '4': TrierListe("Nom abonnÃ©", "dÃ©croissant");
+		case '4': TrierListe("Nom abonné", "décroissant");
 			clients->Trier(Liste::SortType::NOM, false);
 			break;
 		case '5': TrierListe("Date abonnement", "croissant");
 			clients->Trier(Liste::SortType::DATE, true);
 			break;
-		case '6': TrierListe("Date abonnement", "dÃ©croissant");
+		case '6': TrierListe("Date abonnement", "décroissant");
 			clients->Trier(Liste::SortType::DATE, false);
 			break;
 		case '7': TrierListe("Publication", "croissant");
 			clients->Trier(Liste::SortType::TITRE, true);
 			break;
-		case '8': TrierListe("Publication", "dÃ©croissant");
+		case '8': TrierListe("Publication", "décroissant");
 			clients->Trier(Liste::SortType::TITRE, false);
 			break;
 		default: break;
@@ -470,7 +470,7 @@ void TrierListe(string Critere, string Ordre)
 {
 	EcranBienvenue();
 	cout << "\n\nTri " << Ordre << " selon " << Critere << " en cours ...";
-	cout << "\nTri complÃ©tÃ©\n";
+	cout << "\nTri complété\n";
 	cout << "---------------------------------------------\n\n";
 	Pause();
 }
@@ -482,8 +482,8 @@ char MenuTrier()
 	EcranBienvenue();
 	cout << "\n\nTri de la liste des abonnements\n\n";
 	cout << "\tTrier par:\n\n";
-	cout << "\t\t1-NumÃ©ro (.:)\n";
-	cout << "\t\t2-NumÃ©ro (:.)\n";
+	cout << "\t\t1-Numéro (.:)\n";
+	cout << "\t\t2-Numéro (:.)\n";
 	cout << "\t\t3-Nom  (.:)\n";
 	cout << "\t\t4-Nom  (:.)\n";
 	cout << "\t\t5-Date abonnement (.:)\n";
@@ -511,7 +511,7 @@ void Supprimer()
 		try
 		{
 			EcranBienvenue();
-			cout << "\n\n\n\tNumÃ©ro d'abonnement Ã  supprimer:";
+			cout << "\n\n\n\tNuméro d'abonnement à supprimer:";
 			cin >> NumAbonnement;
 			erreur = false;
 			id = stol(NumAbonnement);
@@ -519,7 +519,7 @@ void Supprimer()
 		catch (invalid_argument&)
 		{
 			cout << endl;
-			cout << "\n\tErreur: NumÃ©ro d'abonnement n'est pas un entier.\n" << endl;
+			cout << "\n\tErreur: Numéro d'abonnement n'est pas un entier.\n" << endl;
 			Pause();
 			erreur = true;
 		}
@@ -527,7 +527,7 @@ void Supprimer()
 	Abonnement* cible = clients->RechercheAbonnement(id);
 	if (!cible)
 	{
-		cout << "\n\tErreur: Aucun Abonnement trouvÃ©\n";
+		cout << "\n\tErreur: Aucun Abonnement trouvé\n";
 		Pause();
 		return;
 	}
@@ -576,13 +576,13 @@ char MenuAfficher()
 	char Choix;
 	cout << "\n\nAffichage\n\n";
 	cout << "Options d'affichage:\n\n";
-	cout << "\tÃ€ l'Ã©cran\n\n";
-	cout << "\t\tL-Liste complÃ¨te\n";
-	cout << "\t\tE-liste complÃ¨te, un Ecran Ã  la fois\n";
+	cout << "\tÀ l'écran\n\n";
+	cout << "\t\tL-Liste complète\n";
+	cout << "\t\tE-liste complète, un Ecran à la fois\n";
 	cout << "\t\tI-intervalle d'abonnements\n\n";
 	cout << "\t\tC-un seul abonnement\n\n";
 	cout << "\tDans un fichier\n\n";
-	cout << "\t\tF-Liste complÃ¨te\n";
+	cout << "\t\tF-Liste complète\n";
 	cout << "\t\tN-iNtervalle d'abonnements\n\n";
 	cout << "\t\tQ-retour au menu Principal\n";
 
@@ -640,7 +640,7 @@ void AfficherListeComplete(string option)
 		cout << "Nom du fichier qui recevra la liste:";
 		cin >> FicOut;
 		stream.open(FicOut, ios::out);
-		cout << "Ecriture de la liste complÃ¨te en cours...\n";
+		cout << "Ecriture de la liste complète en cours...\n";
 		while (current)
 		{
 			stream << current->pInfo->getId() << ";";
@@ -653,7 +653,7 @@ void AfficherListeComplete(string option)
 			current = current->pNext;
 		}
 		stream.close();
-		cout << "Ã‰criture de " << clients->getCompteur() << " abonnements terminÃ©e. Disponible dans le fichier " << FicOut << "\n";
+		cout << "Écriture de " << clients->getCompteur() << " abonnements terminée. Disponible dans le fichier " << FicOut << "\n";
 	}
 	else
 	{
@@ -685,10 +685,10 @@ void AfficherIntervalle(string option)
 	char Choix;
 	EcranBienvenue();
 	cout << "\n\nAffichage selon un intervalle\n\n";
-	cout << "\t\t1-NumÃ©ro abonnement\n";
+	cout << "\t\t1-Numéro abonnement\n";
 	cout << "\t\t2-Date abonnement\n";
 	cout << "\t\t3-Publication\n";
-	cout << "\t\t4-Nom d'abonnÃ©\n\n";
+	cout << "\t\t4-Nom d'abonné\n\n";
 	cout << "\t\tA-retour au menu affichage\n";
 	cout << "\t\tQ-retour au menu Principal\n";
 
@@ -713,10 +713,10 @@ void AfficheIntervNum(string option)
 	string FicOut;
 	Noeud* current = clients->getPremier();
 	EcranBienvenue();
-	cout << "\n\nAffichage selon un intervalle de numÃ©ro abonnement\n\n";
-	cout << "\n\nBorne infÃ©rieure:";
+	cout << "\n\nAffichage selon un intervalle de numéro abonnement\n\n";
+	cout << "\n\nBorne inférieure:";
 	cin >> BorneInf;
-	cout << "Borne supÃ©rieure:";
+	cout << "Borne supérieure:";
 	cin >> BorneSup;
 
 	if (BorneInf > BorneSup)
@@ -733,7 +733,7 @@ void AfficheIntervNum(string option)
 		cout << "\nNom du fichier qui recevra la liste par intervalle:";
 		cin >> FicOut;
 		stream.open(FicOut, ios::out);
-		cout << "Ecriture de la liste par intervalle de numÃ©ro d'abonnement en cours...\n";
+		cout << "Ecriture de la liste par intervalle de numéro d'abonnement en cours...\n";
 		while (current)
 		{
 			if (current->pInfo->getId() >= BorneInf && current->pInfo->getId() <= BorneSup)
@@ -750,7 +750,7 @@ void AfficheIntervNum(string option)
 			current = current->pNext;
 		}
 		stream.close();
-		cout << "Ã‰criture de " << nbr << " abonnements terminÃ©e. Disponible dans le fichier " << FicOut << "\n";
+		cout << "Écriture de " << nbr << " abonnements terminée. Disponible dans le fichier " << FicOut << "\n";
 	}
 	else
 	{
@@ -789,9 +789,9 @@ void AfficheIntervDate(string option)
 	string inf, sup;
 	string FicOut;
 	Noeud* current = clients->getPremier();
-	cout << "\n\nBorne infÃ©rieure:";
+	cout << "\n\nBorne inférieure:";
 	cin >> inf;
-	cout << "Borne supÃ©rieure:";
+	cout << "Borne supérieure:";
 	cin >> sup;
 	try{
 
@@ -837,7 +837,7 @@ void AfficheIntervDate(string option)
 			current = current->pNext;
 		}
 		stream.close();
-		cout << "Ã‰criture de " << nbr << " abonnements terminÃ©e. Disponible dans le fichier " << FicOut << "\n";
+		cout << "Écriture de " << nbr << " abonnements terminée. Disponible dans le fichier " << FicOut << "\n";
 	}
 	else
 	{
@@ -874,9 +874,9 @@ void AfficheIntervValeur(string option)
 	string BorneTmp, BorneInf, BorneSup;
 	string FicOut;
 	Noeud* current = clients->getPremier();
-	cout << "\n\nBorne infÃ©rieure:";
+	cout << "\n\nBorne inférieure:";
 	cin >> BorneInf;
-	cout << "Borne supÃ©rieure:";
+	cout << "Borne supérieure:";
 	cin >> BorneSup;
 
 	if (BorneInf > BorneSup)
@@ -910,7 +910,7 @@ void AfficheIntervValeur(string option)
 			current = current->pNext;
 		}
 		stream.close();
-		cout << "Ã‰criture de " << nbr << " abonnements terminÃ©e. Disponible dans le fichier " << FicOut << "\n";
+		cout << "Écriture de " << nbr << " abonnements terminée. Disponible dans le fichier " << FicOut << "\n";
 	}
 	else
 	{
@@ -949,9 +949,9 @@ void AfficheIntervNom(string option)
 	string BorneTmp, BorneInf, BorneSup;
 	string FicOut;
 	Noeud* current = clients->getPremier();
-	cout << "\n\nBorne infÃ©rieure:";
+	cout << "\n\nBorne inférieure:";
 	cin >> BorneInf;
-	cout << "Borne supÃ©rieure:";
+	cout << "Borne supérieure:";
 	cin >> BorneSup;
 
 	if (BorneInf > BorneSup)
@@ -986,7 +986,7 @@ void AfficheIntervNom(string option)
 			current = current->pNext;
 		}
 		stream.close();
-		cout << "Ã‰criture de " << nbr << " abonnements terminÃ©e. Disponible dans le fichier " << FicOut << "\n";
+		cout << "Écriture de " << nbr << " abonnements terminée. Disponible dans le fichier " << FicOut << "\n";
 	}
 	else
 	{
@@ -1022,7 +1022,7 @@ void AfficherUnAbonnement()
 	Abonnement* cible;
 	EcranBienvenue();
 	cout << "\n\nAffichage d'une seul abonnement\n\n";
-	cout << "NumÃ©ro d'abonnement Ã  afficher:";
+	cout << "Numéro d'abonnement à afficher:";
 	cin >> NumAbonnement;
 	cout << "\n\nInformations de l'abonnement " << NumAbonnement << ":\n\n";
 	cible = clients->RechercheAbonnement(NumAbonnement);

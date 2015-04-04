@@ -6,7 +6,7 @@
 void DateEpoch::Affiche()
 {
 	cout << An << "-";
-	//Pour s'assurer d'afficher deux digit pour respecter le format de date de 10 caractÃ¨res
+	//Pour s'assurer d'afficher deux digit pour respecter le format de date de 10 caractères
 	if (Mois < 10)
 		cout << 0;
 
@@ -94,10 +94,10 @@ void DateEpoch::ConvertFormatToEpoch()
 	Epoch = mktime(timeinfo);
 }
 
-//DÃ©finission des opÃ©rateurs de comparaisons
+//Définission des opérateurs de comparaisons
 bool DateEpoch::operator< (const DateEpoch& rh)
 {
-	//Epoch Ã©tant le nombre de seconde Ã©coulÃ© depuis 1970, on peut le comparÃ© directement
+	//Epoch étant le nombre de seconde écoulé depuis 1970, on peut le comparé directement
 	return this->Epoch < rh.Epoch;
 }
 
